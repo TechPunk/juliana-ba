@@ -21,7 +21,7 @@
 :root{
   --bg:#F7F3EE; --card:#FFFFFF; --ink:#1F2340; --muted:#6B6F86; --line:#E7E1D8;
   --jac:#7B5EA7; --jac-soft:#EEE8F6;
-  --food:#D9734E; --shop:#7B5EA7; --fit:#2E8B7A; --walk:#5B8C3A; --work:#2F5DA8; --base:#1F2340;
+  --food:#D9734E; --shop:#7B5EA7; --fit:#2E8B7A; --walk:#5B8C3A; --work:#2F5DA8; --base:#1F2340; --air:#9A6B1F;
   --r:18px;
   --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
 }
@@ -76,6 +76,7 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:650;font-size:30px;line-height
 .btn svg{width:16px;height:16px}
 .btn.pri{background:var(--ink);color:#fff}
 .btn.uber{background:#000;color:#fff}
+.btn.wide{width:100%;justify-content:center;padding:13px 14px;font-size:15px}
 .btn.rev{background:#FFF1D6;color:#6B4A00}
 .check{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;background:#fff}
 .check svg{width:16px;height:16px;opacity:0}
@@ -262,7 +263,8 @@ var CATS = {
   shop:{label:"Compras", c:"var(--shop)", hex:"#7B5EA7", ico:"bag"},
   fit:{label:"Treino", c:"var(--fit)", hex:"#2E8B7A", ico:"swim"},
   walk:{label:"Passeio", c:"var(--walk)", hex:"#5B8C3A", ico:"leaf"},
-  work:{label:"Congresso", c:"var(--work)", hex:"#2F5DA8", ico:"badge"}
+  work:{label:"Congresso", c:"var(--work)", hex:"#2F5DA8", ico:"badge"},
+  air:{label:"Aeroporto", c:"var(--air)", hex:"#9A6B1F", ico:"plane"}
 };
 
 var P = {
@@ -286,14 +288,16 @@ var P = {
   evelia:{n:"Evelia", cat:"food", addr:"Campos Salles 1712", hrs:"Ter a dom, 12h às 15:30 e 19:30 às 0h · seg fechado", lat:-34.5484044, lng:-58.4584344, pid:"ChIJsUV-rD61vJUR7riYcLg3KDE", tip:"Massas incríveis: nhoque com trufa e agnolotti. Reserve."},
   cantina:{n:"Cantina Núñez", cat:"food", addr:"Manuel Ugarte 1682", hrs:"Todos os dias, 12h às 16h e 20h às 0h", lat:-34.552635, lng:-58.4544395, pid:"ChIJCcxyN3m1vJURufgX_uDk_UM", tip:"Bodegón de bairro: massa caseira, milanesa e panqueca de doce de leite."},
   mishiguene:{n:"Café Mishiguene", cat:"food", addr:"Congreso 1602", hrs:"Todos os dias, 9h às 0h", lat:-34.5513344, lng:-58.4542732, pid:"ChIJa99Ue4O1vJUR44pJXfJJaF8", tip:"Cozinha de inspiração israelense. O homus de brócolis é ótimo. Bom para jantar leve."},
-  pobreluis:{n:"El Pobre Luis", cat:"food", addr:"Arribeños 2393", hrs:"Todos os dias, almoço e jantar (dom só almoço)", lat:-34.5553424, lng:-58.4522461, pid:"ChIJjSIcnS20vJURTTlKe4xJk08", tip:"Parrilla uruguaia clássica do bairro, a 3 minutos a pé."}
+  pobreluis:{n:"El Pobre Luis", cat:"food", addr:"Arribeños 2393", hrs:"Todos os dias, almoço e jantar (dom só almoço)", lat:-34.5553424, lng:-58.4522461, pid:"ChIJjSIcnS20vJURTTlKe4xJk08", tip:"Parrilla uruguaia clássica do bairro, a 3 minutos a pé."},
+  ezeiza:{n:"Aeroporto de Ezeiza (EZE)", cat:"air", addr:"Autopista Ricchieri km 33,5, Ezeiza", hrs:"Aberto 24h", lat:-34.8125998, lng:-58.5391508, tip:"Aeroporto internacional de Buenos Aires. Fica a cerca de 1 hora de carro do hotel."},
+  jantar12:{n:"Jantar", cat:"food", addr:"Local a confirmar", hrs:"Local a confirmar", tip:"O local ainda não foi definido."}
 };
 
 var DAYS = [
-  {d:9, wd:"Seg", title:"Chegada e o bairro a pé", items:[
-    {t:"15:00", p:"hotel", note:"Check-in. Se o tempo estiver bom, um mergulho na piscina do terraço."},
-    {t:"17:30", p:"barrancas", note:"Caminhada de fim de tarde. Ao lado ficam o Barrio Chino e a Av. Cabildo, boa para olhar vitrines."},
-    {t:"20:30", p:"chalaca", note:"Jantar peruano a 3 quadras do hotel. Peça o ceviche chalaco e o pisco sour de maracujá."}
+  {d:9, wd:"Seg", title:"Chegada, check-in e jantar", items:[
+    {t:"18:30", p:"ezeiza", note:"Chegada a Buenos Aires. Depois da imigração e das malas (cerca de 1 hora), toque no botão para pedir o Uber até o hotel. Se o app indicar um ponto de embarque, siga o indicado.", uber:{from:"ezeiza", to:"hotel", label:"Pedir Uber até o hotel"}},
+    {t:"20:30", p:"hotel", note:"Check-in. A recepção funciona 24h. Deixe as malas e descanse um pouco antes do jantar."},
+    {t:"21:15", p:"chalaca", note:"Jantar peruano a 3 quadras do hotel. Peça o ceviche chalaco e o pisco sour de maracujá."}
   ]},
   {d:10, wd:"Ter", title:"Natação e compras em Palermo", items:[
     {t:"07:45", p:"sportclub", note:"Natação. São uns 20 min a pé pela Av. del Libertador (ou 5 min de Uber). Leve touca e peça um 'pase diario'."},
@@ -313,15 +317,16 @@ var DAYS = [
     {t:"08:45", p:"ifibyne", note:"Congresso. Uber de 10 a 15 min; no app, digite 'IFIBYNE, Ciudad Universitaria'."},
     {t:"21:00", p:"evelia", note:"Jantar especial: massas incríveis, a 12 min a pé do hotel. Reserve."}
   ]},
-  {d:12, wd:"Qui", title:"Congresso e natação", banner:"Os horários do congresso são aproximados. Ajuste conforme o programa oficial.", items:[
+  {d:12, wd:"Qui", title:"Congresso e jantar", banner:"Os horários do congresso são aproximados. Ajuste conforme o programa oficial.", items:[
     {t:"08:30", p:"usina", note:"Café da manhã. Abre às 8:30."},
     {t:"09:15", p:"ifibyne", note:"Congresso. Uber de 10 a 15 min."},
-    {t:"18:30", p:"sportclub", note:"Natação depois do congresso para relaxar. Fica aberto até as 22h. Do IFIBYNE, são uns 10 min de Uber."},
-    {t:"21:00", p:"cantina", note:"Jantar descontraído: massa caseira e panqueca de doce de leite."}
+    {t:"18:30", p:"sportclub", opt:true, note:"Natação depois do congresso, só se der tempo antes do jantar das 20h. Do IFIBYNE, são uns 10 min de Uber."},
+    {t:"20:00", p:"jantar12", note:"Jantar depois do congresso. O local ainda não foi definido.", uber:{label:"Pedir Uber (digite o local no app)"}}
   ]},
   {d:13, wd:"Sex", title:"Despedida", items:[
     {t:"08:30", p:"usina", note:"Último café da manhã em Buenos Aires."},
-    {t:"10:00", p:"hotel", note:"Check-out às 10h. O hotel guarda as malas, se precisar."}
+    {t:"10:00", p:"hotel", note:"Check-out às 10h. O hotel guarda as malas, se precisar."},
+    {t:"Volta", p:"ezeiza", note:"Na hora de ir, toque no botão. O Uber sai de onde você estiver e vai até o aeroporto. A viagem leva cerca de 1 hora, ou mais no horário de pico. No app, confira o terminal do seu voo.", uber:{to:"ezeiza", label:"Pedir Uber até o aeroporto"}}
   ]}
 ];
 
@@ -330,7 +335,7 @@ function $(s,r){return (r||document).querySelector(s)}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]})}
 function hav(a,b){var R=6371000,t=Math.PI/180,dLa=(b.lat-a.lat)*t,dLo=(b.lng-a.lng)*t,x=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(dLo/2)*Math.sin(dLo/2);return 2*R*Math.asin(Math.sqrt(x))}
 function walkMin(m){return Math.max(1,Math.round(m*1.3/80))}
-function carMin(m){return Math.max(5,Math.round(m*1.4/1000/24*60)+3)}
+function carMin(m){if(m>15000)return Math.round((m*1.4/1000/45*60+5)/5)*5;return Math.max(5,Math.round(m*1.4/1000/24*60)+3)}
 function fmtKm(m){var r=m*1.3;return r<1000?Math.round(r/50)*50+" m":(r/1000).toFixed(1).replace(".",",")+" km"}
 function fmtHM(m){return m<60?m+" min":Math.floor(m/60)+" h"+(m%60?" "+(m%60)+" min":"")}
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
@@ -342,7 +347,8 @@ var ICON = {
   bag:'<path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
   swim:'<path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="7" r="2"/><path d="m4 14 5-4 3 2.5 3-2"/>',
   leaf:'<path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15"/><path d="M5 19 13 11"/>',
-  badge:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v3h6V3M9 12h6M9 16h4"/>'
+  badge:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v3h6V3M9 12h6M9 16h4"/>',
+  plane:'<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>'
 };
 function ico(k){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICON[k]+'</svg>'}
 var I_WALK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="m9 21 2-6 3 3v3M7 12l3-4 4 2 3 3M10 8l-1 5"/></svg>';
@@ -353,11 +359,16 @@ var I_NAV='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4.5 20.3l
 var I_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
 var I_INFO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>';
 
-function gmaps(p,mode){return "https://www.google.com/maps/dir/?api=1&destination="+p.lat+","+p.lng+"&destination_place_id="+p.pid+"&travelmode="+(mode||"walking")}
+function gmaps(p,mode){return "https://www.google.com/maps/dir/?api=1&destination="+p.lat+","+p.lng+(p.pid?"&destination_place_id="+p.pid:"")+"&travelmode="+(mode||"walking")}
 function amaps(p,mode){return "https://maps.apple.com/?daddr="+p.lat+","+p.lng+"&q="+encodeURIComponent(p.n)+"&dirflg="+(mode==="driving"?"d":"w")}
-function uber(p){return "https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Blatitude%5D="+p.lat+"&dropoff%5Blongitude%5D="+p.lng+"&dropoff%5Bnickname%5D="+encodeURIComponent(p.n)}
+function uber(p,from){
+  var u="https://m.uber.com/ul/?action=setPickup&pickup"+(from?"%5Blatitude%5D="+from.lat+"&pickup%5Blongitude%5D="+from.lng+"&pickup%5Bnickname%5D="+encodeURIComponent(from.n):"=my_location");
+  if(p)u+="&dropoff%5Blatitude%5D="+p.lat+"&dropoff%5Blongitude%5D="+p.lng+"&dropoff%5Bnickname%5D="+encodeURIComponent(p.n);
+  return u;
+}
+function rideBtn(r){return '<div class="acts"><a class="btn uber wide" href="'+uber(r.to&&P[r.to],r.from&&P[r.from])+'" target="_blank" rel="noopener">'+I_CAR+esc(r.label)+'</a></div>'}
 
-function greviews(p){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(p.n+", "+p.addr+", Buenos Aires")+"&query_place_id="+p.pid}
+function greviews(p){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(p.n+", "+p.addr+", Buenos Aires")+(p.pid?"&query_place_id="+p.pid:"")}
 var I_RATE='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.4 5.7 21l1.5-7L2 9.3l7-.8z"/></svg>';
 function reviewBtn(p){return '<a class="btn rev" href="'+greviews(p)+'" target="_blank" rel="noopener">'+I_RATE+'Fotos e avaliações</a>'}
 
@@ -425,11 +436,12 @@ function renderPlan(){
     html+='<button class="check" data-k="'+key+'" aria-label="Marcar como feito">'+I_CHECK+'</button>';
     html+='<h3>'+esc(p.n)+'</h3>';
     html+='<p class="note">'+esc(it.note)+'</p>';
-    html+='<div class="meta"><span>'+I_CLOCK+esc(p.hrs)+'</span>';
-    if(it.p!=="hotel")html+='<span>'+I_PIN+(fromHotel>2200?carMin(fromHotel)+' min de carro':walkMin(fromHotel)+' min a pé')+' do hotel</span>';
-    html+='<span class="me-d" data-me="'+it.p+'"></span>';
+    html+='<div class="meta"><span>'+(p.lat?I_CLOCK:I_PIN)+esc(p.hrs)+'</span>';
+    if(it.p!=="hotel"&&p.lat)html+='<span>'+I_PIN+(fromHotel>2200?carMin(fromHotel)+' min de carro':walkMin(fromHotel)+' min a pé')+' do hotel</span>';
+    if(p.lat)html+='<span class="me-d" data-me="'+it.p+'"></span>';
     html+='</div>';
-    if(it.p!=="hotel"||i>0)html+=actions(p,far);
+    if(it.uber)html+=rideBtn(it.uber);
+    else if(it.p!=="hotel"||i>0)html+=actions(p,far);
     else html+='<div class="acts">'+reviewBtn(p)+'</div>';
     html+='</div></li>';
     if(i<day.items.length-1){
@@ -449,7 +461,7 @@ function renderPlan(){
 }
 
 /* ---------- mapa ---------- */
-var mapDay=cur, ids=Object.keys(P), map=null, dayLayer=null, meDot=null, meRing=null, leafletState="idle";
+var mapDay=cur, ids=Object.keys(P).filter(function(id){return P[id].lat}), map=null, dayLayer=null, meDot=null, meRing=null, leafletState="idle";
 var I_STAR='<svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.4 5.7 21l1.5-7L2 9.3l7-.8z" fill="#FFD27A"/></svg>';
 
 function mapOpen(){return $("#v-map").classList.contains("on")}
@@ -467,7 +479,7 @@ function pin(html,cls,size,hex){return L.divIcon({className:"",html:'<div class=
 function addPlace(id,icon,z){L.marker([P[id].lat,P[id].lng],{icon:icon,zIndexOffset:z,title:P[id].n}).on("click",function(){tapPlace(id)}).addTo(dayLayer)}
 function tapPlace(id){
   var a=map.latLngToContainerPoint([P[id].lat,P[id].lng]), near=[], seen={hotel:1};
-  DAYS[mapDay].items.forEach(function(it){seen[it.p]=1});
+  DAYS[mapDay].items.forEach(function(it){if(P[it.p].lat)seen[it.p]=1});
   Object.keys(seen).forEach(function(k){if(a.distanceTo(map.latLngToContainerPoint([P[k].lat,P[k].lng]))<30)near.push([P[k].lat,P[k].lng])});
   if(near.length>1&&map.getZoom()<18){
     map.fitBounds(L.latLngBounds(near),{padding:[80,80],maxZoom:18});
@@ -494,12 +506,12 @@ function renderMap(){
   // outros pontos (apagados)
   ids.forEach(function(id){if(!used[id])addPlace(id,pin("","pin-off",30,CATS[P[id].cat].hex),0)});
   // rota do dia
-  var pts=day.items.map(function(it){return [P[it.p].lat,P[it.p].lng]});
+  var pts=day.items.filter(function(it){return P[it.p].lat}).map(function(it){return [P[it.p].lat,P[it.p].lng]});
   L.polyline(pts,{color:"#1F2340",opacity:.65,weight:3.5,dashArray:"9 9",lineCap:"round",interactive:false}).addTo(dayLayer);
   // hotel
   addPlace("hotel",pin(I_STAR,"pin",36,"#1F2340"),500);
   // pontos do dia numerados
-  day.items.forEach(function(it,i){if(it.p!=="hotel")addPlace(it.p,pin(i+1,"pin",32,CATS[P[it.p].cat].hex),1000)});
+  day.items.forEach(function(it,i){if(it.p!=="hotel"&&P[it.p].lat)addPlace(it.p,pin(i+1,"pin",32,CATS[P[it.p].cat].hex),1000)});
   map.fitBounds(L.latLngBounds(pts.concat([[P.hotel.lat,P.hotel.lng]])),{paddingTopLeft:[30,30],paddingBottomRight:[60,30],maxZoom:16,animate:false});
   drawMe();
 }
@@ -518,7 +530,7 @@ $("#zme").onclick=function(){if(me){centerMe();return}wantCenter=true;startLoc()
 
 /* ---------- lugares ---------- */
 function renderPlaces(){
-  var order=["fit","food","shop","walk","work","base"], html="";
+  var order=["fit","food","shop","walk","work","air","base"], html="";
   order.forEach(function(c){
     var list=ids.filter(function(id){return P[id].cat===c}).sort(function(a,b){return hav(P.hotel,P[a])-hav(P.hotel,P[b])});
     if(!list.length)return;
@@ -542,7 +554,7 @@ function openSheet(id){
   h+='<p class="kv me-kv" data-mek="'+id+'"></p>';
   if(when.length)h+='<p class="kv"><b>No roteiro:</b> '+when.join(" · ")+'</p>';
   h+=actions(p,far);
-  if(far)h+='<div class="acts" style="margin-top:8px"><a class="btn" href="'+gmaps(p,"walking")+'" target="_blank" rel="noopener">'+I_WALK+'Ver a pé</a></div>';
+  if(far&&p.cat!=="air")h+='<div class="acts" style="margin-top:8px"><a class="btn" href="'+gmaps(p,"walking")+'" target="_blank" rel="noopener">'+I_WALK+'Ver a pé</a></div>';
   $("#sheetBody").innerHTML=h;
   updateMe();
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");
@@ -575,7 +587,7 @@ var me=null, watchId=null, wantCenter=false, locState="off", locErr="";
 function meText(p,bold){
   var d=hav(me,p), a=bold?"<b>De você:</b> ":"De você: ";
   if(d<60)return bold?"<b>Você está aqui</b>":"Você está aqui";
-  return a+(d>60000?Math.round(d/1000)+" km em linha reta":fmtKm(d)+" · "+fmtHM(walkMin(d))+" a pé");
+  return a+(d>10000?Math.round(d/1000)+" km em linha reta":fmtKm(d)+" · "+fmtHM(walkMin(d))+" a pé");
 }
 function updateMe(){
   if(!me)return;
