@@ -5,8 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Juliana BA">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#F7F3EE">
+<meta name="robots" content="noindex">
 <title>Juliana em Buenos Aires</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="stylesheet" href="leaflet/leaflet.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -78,14 +85,43 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:650;font-size:30px;line-height
 .leg.car{color:#8A5A2B}
 
 /* map */
-.mapwrap{background:var(--card);border-radius:22px;border:1px solid var(--line);overflow:hidden;position:relative}
-.mapwrap svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.mapwrap{background:var(--card);border-radius:22px;border:1px solid var(--line);overflow:hidden;position:relative;z-index:0}
+#map{width:100%;height:54vh;height:54svh;min-height:320px;max-height:620px;background:#EFEAE2}
+.leaflet-container{font-family:Inter,system-ui,-apple-system,sans-serif}
+.leaflet-tile-pane{filter:saturate(.72) brightness(1.02)}
+.leaflet-tile-container img{width:257px!important;height:257px!important}
+.leaflet-container .leaflet-control-attribution{font-size:10px;background:rgba(255,255,255,.8);border-radius:6px 0 0 0}
+.pin{width:100%;height:100%;border-radius:50%;background:var(--h);border:2.5px solid #fff;color:#fff;font-size:14px;font-weight:700;display:grid;place-items:center;box-shadow:0 2px 6px rgba(31,35,64,.35)}
+.pin svg{width:20px;height:20px}
+.pin-off{width:100%;height:100%;display:grid;place-items:center}
+.pin-off::after{content:"";width:14px;height:14px;border-radius:50%;background:var(--h);border:1.5px solid #fff;opacity:.5}
+.me-dot{position:relative;width:100%;height:100%;border-radius:50%;background:#2F7DF6;border:3px solid #fff;box-shadow:0 1px 6px rgba(31,35,64,.45)}
+.me-dot::after{content:"";position:absolute;inset:-3px;border-radius:50%;background:#2F7DF6;opacity:.45;animation:mepulse 2s ease-out infinite;z-index:-1}
+@keyframes mepulse{from{transform:scale(1);opacity:.45}to{transform:scale(2.8);opacity:0}}
+@media (prefers-reduced-motion:reduce){.me-dot::after{animation:none;opacity:0}}
+.mapmsg{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center;color:var(--muted);font-size:14px;z-index:999}
+.mapmsg[hidden]{display:none}
 .maplegend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted);padding:10px 4px 2px}
 .maplegend span{display:inline-flex;align-items:center;gap:5px}
 .maplegend i{width:9px;height:9px;border-radius:50%;display:inline-block}
-.zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
-.zoom button{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.95);border:1px solid var(--line);font-size:18px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px;z-index:1000}
+.zoom button{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.95);border:1px solid var(--line);font-size:18px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.08);display:grid;place-items:center}
+.zoom button svg{width:20px;height:20px}
+.zoom #zme{margin-top:6px}
+.zoom #zme.on{color:#2F7DF6}
 .mapnote{font-size:12px;color:var(--muted);margin:8px 4px 0}
+
+/* localização */
+.locbar{margin:0 0 6px}
+.locbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 14px;border-radius:14px;background:var(--jac);color:#fff;font-weight:600;font-size:15px}
+.locbtn svg{width:18px;height:18px}
+.locbtn[disabled]{opacity:.7}
+.lochint{font-size:12.5px;color:var(--muted);margin:6px 4px 0;text-align:center}
+.locon{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);padding:0 4px}
+.locon i{width:10px;height:10px;border-radius:50%;background:#2F7DF6;box-shadow:0 0 0 3px rgba(47,125,246,.2);display:inline-block}
+.locerr{background:#FBEDE7;color:#8A3B1E;border-radius:14px;padding:10px 12px;font-size:13.5px;margin:0 0 8px}
+.meta .me-d{color:var(--jac);font-weight:600}
+.me-d:empty,.me-kv:empty{display:none}
 
 /* list */
 .group h4{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 4px 8px}
@@ -138,6 +174,8 @@ nav button.on{color:var(--jac)}
     <div class="sub" id="subline">Seu roteiro, com rotas a um toque.</div>
   </header>
 
+  <div class="locbar" id="locbar"></div>
+
   <!-- ROTEIRO -->
   <section class="view on" id="v-plan">
     <div class="days" id="days"></div>
@@ -150,11 +188,16 @@ nav button.on{color:var(--jac)}
   <section class="view" id="v-map">
     <div class="days" id="mapdays"></div>
     <div class="mapwrap">
-      <svg id="map" viewBox="0 0 1000 1000" aria-label="Mapa do roteiro"></svg>
-      <div class="zoom"><button id="zin" aria-label="Aproximar">+</button><button id="zout" aria-label="Afastar">−</button></div>
+      <div id="map" aria-label="Mapa do roteiro"></div>
+      <div class="zoom">
+        <button id="zin" aria-label="Aproximar">+</button>
+        <button id="zout" aria-label="Afastar">−</button>
+        <button id="zme" aria-label="Centralizar na minha posição"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+      </div>
+      <div class="mapmsg" id="mapmsg" hidden></div>
     </div>
     <div class="maplegend" id="legend"></div>
-    <p class="mapnote">Mapa esquemático: toque num ponto para ver detalhes e abrir a rota com GPS no Google Maps ou no Apple Maps.</p>
+    <p class="mapnote">Toque num ponto para ver detalhes e abrir a rota no Google Maps ou no Apple Maps. A linha tracejada liga as paradas do dia.</p>
   </section>
 
   <!-- LUGARES -->
@@ -289,6 +332,7 @@ function hav(a,b){var R=6371000,t=Math.PI/180,dLa=(b.lat-a.lat)*t,dLo=(b.lng-a.l
 function walkMin(m){return Math.max(1,Math.round(m*1.3/80))}
 function carMin(m){return Math.max(5,Math.round(m*1.4/1000/24*60)+3)}
 function fmtKm(m){var r=m*1.3;return r<1000?Math.round(r/50)*50+" m":(r/1000).toFixed(1).replace(".",",")+" km"}
+function fmtHM(m){return m<60?m+" min":Math.floor(m/60)+" h"+(m%60?" "+(m%60)+" min":"")}
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
 var done = store("jba-done")||{};
 
@@ -328,22 +372,27 @@ function actions(p,far){
 /* ---------- dia atual ---------- */
 var now=new Date();
 var todayIdx=-1;
-if(now.getFullYear()===2026&&now.getMonth()===10){DAYS.forEach(function(d,i){if(d.d===now.getDate())todayIdx=i})}
+function findToday(){
+  todayIdx=-1;
+  if(now.getFullYear()===2026&&now.getMonth()===10){DAYS.forEach(function(d,i){if(d.d===now.getDate())todayIdx=i})}
+}
+findToday();
 var cur = todayIdx>=0?todayIdx:(store("jba-day")||0);
 if(cur<0||cur>=DAYS.length)cur=0;
 
-(function greet(){
+function greet(){
   var h=now.getHours(), g=h<12?"Bom dia":h<19?"Boa tarde":"Boa noite";
   $("#hello").textContent=g+", Juliana";
   if(todayIdx>=0) $("#subline").textContent="Hoje é "+DAYS[todayIdx].title.toLowerCase()+".";
-})();
+}
+greet();
 
 function chips(el,onPick,sel){
   el.innerHTML=DAYS.map(function(d,i){
     return '<button class="chip'+(i===sel?' on':'')+'" data-i="'+i+'">'+(i===todayIdx?'<span class="today">HOJE</span>':'')+'<span>'+d.wd+'</span><b>'+d.d+'</b></button>';
   }).join("");
   el.querySelectorAll(".chip").forEach(function(b){b.onclick=function(){onPick(+b.dataset.i)}});
-  var on=el.querySelector(".on"); if(on&&on.scrollIntoView) setTimeout(function(){on.scrollIntoView({inline:"center",block:"nearest"})},50);
+  var on=el.querySelector(".on"); if(on) setTimeout(function(){el.scrollLeft=on.offsetLeft-el.offsetLeft-(el.clientWidth-on.offsetWidth)/2},50);
 }
 
 function minutes(t){var a=t.split(":");return +a[0]*60+ +a[1]}
@@ -373,6 +422,7 @@ function renderPlan(){
     html+='<p class="note">'+esc(it.note)+'</p>';
     html+='<div class="meta"><span>'+I_CLOCK+esc(p.hrs)+'</span>';
     if(it.p!=="hotel")html+='<span>'+I_PIN+(fromHotel>2200?carMin(fromHotel)+' min de carro':walkMin(fromHotel)+' min a pé')+' do hotel</span>';
+    html+='<span class="me-d" data-me="'+it.p+'"></span>';
     html+='</div>';
     if(it.p!=="hotel"||i>0)html+=actions(p,far);
     html+='</div></li>';
@@ -389,72 +439,76 @@ function renderPlan(){
   $("#timeline").querySelectorAll(".check").forEach(function(b){
     b.onclick=function(){var k=b.dataset.k;done[k]=!done[k];store("jba-done",done);renderPlan();if(done[k])toast("Feito ✓")};
   });
+  updateMe();
 }
 
 /* ---------- mapa ---------- */
-var mapDay=cur, zoom=1, center=null;
-var ids=Object.keys(P);
-var minLat=Infinity,maxLat=-Infinity,minLng=Infinity,maxLng=-Infinity;
-ids.forEach(function(k){var p=P[k];minLat=Math.min(minLat,p.lat);maxLat=Math.max(maxLat,p.lat);minLng=Math.min(minLng,p.lng);maxLng=Math.max(maxLng,p.lng)});
-var COS=Math.cos(-34.565*Math.PI/180), PAD=0.006;
-minLat-=PAD;maxLat+=PAD;minLng-=PAD;maxLng+=PAD;
-var W=(maxLng-minLng)*COS, H=(maxLat-minLat), S=Math.max(W,H);
-function xy(lat,lng){return [((lng-minLng)*COS + (S-W)/2)/S*1000, ((maxLat-lat) + (S-H)/2)/S*1000]}
+var mapDay=cur, ids=Object.keys(P), map=null, dayLayer=null, meDot=null, meRing=null, leafletState="idle";
+var I_STAR='<svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.4 5.7 21l1.5-7L2 9.3l7-.8z" fill="#FFD27A"/></svg>';
+
+function mapOpen(){return $("#v-map").classList.contains("on")}
+function loadLeaflet(){
+  if(window.L||leafletState==="loading")return;
+  leafletState="loading";
+  var s=document.createElement("script");
+  s.src="leaflet/leaflet.js";
+  s.onload=function(){leafletState="ok";if(mapOpen())renderMap()};
+  s.onerror=function(){s.remove();leafletState="fail";if(mapOpen())renderMap()};
+  document.head.appendChild(s);
+}
+function mapMsg(t){var m=$("#mapmsg");m.textContent=t||"";m.hidden=!t}
+function pin(html,cls,size,hex){return L.divIcon({className:"",html:'<div class="'+cls+'" style="--h:'+hex+'">'+html+'</div>',iconSize:[size,size],iconAnchor:[size/2,size/2]})}
+function addPlace(id,icon,z){L.marker([P[id].lat,P[id].lng],{icon:icon,zIndexOffset:z,title:P[id].n}).on("click",function(){tapPlace(id)}).addTo(dayLayer)}
+function tapPlace(id){
+  var a=map.latLngToContainerPoint([P[id].lat,P[id].lng]), near=[], seen={hotel:1};
+  DAYS[mapDay].items.forEach(function(it){seen[it.p]=1});
+  Object.keys(seen).forEach(function(k){if(a.distanceTo(map.latLngToContainerPoint([P[k].lat,P[k].lng]))<30)near.push([P[k].lat,P[k].lng])});
+  if(near.length>1&&map.getZoom()<18){
+    map.fitBounds(L.latLngBounds(near),{padding:[80,80],maxZoom:18});
+    toast("Pontos juntos: aproximei o mapa");
+    return;
+  }
+  openSheet(id);
+}
 
 function renderMap(){
-  chips($("#mapdays"),function(i){mapDay=i;center=null;zoom=1;renderMap()},mapDay);
-  var svg=$("#map"), day=DAYS[mapDay], used={};
+  chips($("#mapdays"),function(i){mapDay=i;renderMap()},mapDay);
+  $("#legend").innerHTML=Object.keys(CATS).filter(function(c){return c!=="base"}).map(function(c){return '<span><i style="background:'+CATS[c].hex+'"></i>'+CATS[c].label+'</span>'}).join("")+'<span>★ seu hotel</span><span><i style="background:#2F7DF6"></i>você</span>';
+  if(!window.L){mapMsg(leafletState==="fail"?"Não consegui carregar o mapa. Verifique a internet e toque em Mapa de novo.":"Carregando o mapa...");return}
+  mapMsg("");
+  if(!map){
+    map=L.map("map",{zoomControl:false});
+    map.attributionControl.setPrefix(false);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(map);
+    dayLayer=L.layerGroup().addTo(map);
+  }else{map.invalidateSize()}
+  dayLayer.clearLayers();
+  var day=DAYS[mapDay], used={hotel:1};
   day.items.forEach(function(it){used[it.p]=1});
-  var vb=1000/zoom, c=center||(function(){
-    var xs=[],ys=[];day.items.forEach(function(it){var q=xy(P[it.p].lat,P[it.p].lng);xs.push(q[0]);ys.push(q[1])});
-    return [(Math.min.apply(0,xs)+Math.max.apply(0,xs))/2,(Math.min.apply(0,ys)+Math.max.apply(0,ys))/2];
-  })();
-  if(zoom===1)c=[500,500];
-  var x0=Math.max(0,Math.min(1000-vb,c[0]-vb/2)), y0=Math.max(0,Math.min(1000-vb,c[1]-vb/2));
-  svg.setAttribute("viewBox",x0+" "+y0+" "+vb+" "+vb);
-  var k=1/zoom, s='';
-  s+='<defs><pattern id="g" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#EFE9E0" stroke-width="1.5"/></pattern></defs>';
-  s+='<rect x="0" y="0" width="1000" height="1000" fill="#FBF8F4"/><rect width="1000" height="1000" fill="url(#g)"/>';
-  // rio (aproximado, nordeste)
-  var r1=xy(-34.536,-58.452), r2=xy(-34.541,-58.432), r3=xy(-34.556,-58.412), r4=xy(-34.568,-58.396);
-  s+='<path d="M'+r1[0]+' -20 L'+r1[0]+' '+r1[1]+' Q'+r2[0]+' '+(r2[1]+10)+' '+r3[0]+' '+r3[1]+' T'+r4[0]+' '+r4[1]+' L1020 '+r4[1]+' L1020 -20 Z" fill="#DCE8F0"/>';
-  var rl=xy(-34.538,-58.416);
-  s+='<text x="'+rl[0]+'" y="'+rl[1]+'" font-size="'+(20*k)+'" fill="#6E8FA6" font-style="italic" font-family="Fraunces,serif" text-anchor="middle">Río de la Plata</text>';
-  // Av. del Libertador (aproximada)
-  var L=[[-34.5451,-58.4590],[-34.553868,-58.450464],[-34.5640,-58.4370],[-34.5706,-58.4220],[-34.5790,-58.4040]].map(function(q){return xy(q[0],q[1])});
-  s+='<polyline points="'+L.map(function(q){return q.join(",")}).join(" ")+'" fill="none" stroke="#E6DED2" stroke-width="'+(14*k)+'" stroke-linecap="round" stroke-linejoin="round"/>';
-  var lb=xy(-34.5615,-58.4425);
-  s+='<text x="'+lb[0]+'" y="'+lb[1]+'" font-size="'+(14*k)+'" fill="#A69C8C" font-weight="600" transform="rotate(-38 '+lb[0]+' '+lb[1]+')" text-anchor="middle">Av. del Libertador</text>';
-  // bairros
-  [["NÚÑEZ",-34.5455,-58.4655],["BELGRANO",-34.5625,-58.4590],["PALERMO SOHO",-34.5950,-58.4330],["PALERMO",-34.5770,-58.4250],["CIUDAD UNIVERSITARIA",-34.5390,-58.4440]].forEach(function(n){
-    var q=xy(n[1],n[2]);s+='<text x="'+q[0]+'" y="'+q[1]+'" font-size="'+(15*k)+'" letter-spacing="'+(3*k)+'" fill="#C2B8A8" font-weight="700" text-anchor="middle">'+n[0]+'</text>';
-  });
   // outros pontos (apagados)
-  ids.forEach(function(id){if(used[id])return;var p=P[id],q=xy(p.lat,p.lng);
-    s+='<circle class="pt" data-id="'+id+'" cx="'+q[0]+'" cy="'+q[1]+'" r="'+(9*k)+'" fill="'+CATS[p.cat].hex+'" opacity=".28"/>';
-  });
+  ids.forEach(function(id){if(!used[id])addPlace(id,pin("","pin-off",30,CATS[P[id].cat].hex),0)});
   // rota do dia
-  var pts=day.items.map(function(it){return xy(P[it.p].lat,P[it.p].lng)});
-  s+='<polyline points="'+pts.map(function(q){return q.join(",")}).join(" ")+'" fill="none" stroke="#1F2340" stroke-opacity=".55" stroke-width="'+(3.5*k)+'" stroke-dasharray="'+(10*k)+' '+(8*k)+'" stroke-linecap="round"/>';
+  var pts=day.items.map(function(it){return [P[it.p].lat,P[it.p].lng]});
+  L.polyline(pts,{color:"#1F2340",opacity:.65,weight:3.5,dashArray:"9 9",lineCap:"round",interactive:false}).addTo(dayLayer);
   // hotel
-  var h=xy(P.hotel.lat,P.hotel.lng);
-  s+='<g class="pt" data-id="hotel"><circle cx="'+h[0]+'" cy="'+h[1]+'" r="'+(22*k)+'" fill="#1F2340"/><path transform="translate('+(h[0]-11*k)+' '+(h[1]-11*k)+') scale('+(0.92*k)+')" d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.4 5.7 21l1.5-7L2 9.3l7-.8z" fill="#FFD27A"/></g>';
+  addPlace("hotel",pin(I_STAR,"pin",36,"#1F2340"),500);
   // pontos do dia numerados
-  var seen={};
-  day.items.forEach(function(it,i){
-    var p=P[it.p];if(it.p==="hotel")return;
-    var q=xy(p.lat,p.lng), off=seen[it.p]?14*k:0; seen[it.p]=1;
-    s+='<g class="pt" data-id="'+it.p+'"><circle cx="'+(q[0]+off)+'" cy="'+(q[1]-off)+'" r="'+(17*k)+'" fill="'+CATS[p.cat].hex+'" stroke="#fff" stroke-width="'+(3*k)+'"/><text x="'+(q[0]+off)+'" y="'+(q[1]-off+6*k)+'" font-size="'+(17*k)+'" font-weight="700" fill="#fff" text-anchor="middle">'+(i+1)+'</text></g>';
-  });
-  // posição (se o navegador permitir)
-  if(me){var mq=xy(me.lat,me.lng);s+='<circle cx="'+mq[0]+'" cy="'+mq[1]+'" r="'+(26*k)+'" fill="#2F7DF6" opacity=".18"/><circle cx="'+mq[0]+'" cy="'+mq[1]+'" r="'+(10*k)+'" fill="#2F7DF6" stroke="#fff" stroke-width="'+(3*k)+'"/>'}
-  svg.innerHTML=s;
-  svg.querySelectorAll(".pt").forEach(function(g){g.style.cursor="pointer";g.addEventListener("click",function(){openSheet(g.getAttribute("data-id"))})});
-  $("#legend").innerHTML=Object.keys(CATS).filter(function(c){return c!=="base"}).map(function(c){return '<span><i style="background:'+CATS[c].hex+'"></i>'+CATS[c].label+'</span>'}).join("")+'<span>★ seu hotel</span>';
+  day.items.forEach(function(it,i){if(it.p!=="hotel")addPlace(it.p,pin(i+1,"pin",32,CATS[P[it.p].cat].hex),1000)});
+  map.fitBounds(L.latLngBounds(pts.concat([[P.hotel.lat,P.hotel.lng]])),{paddingTopLeft:[30,30],paddingBottomRight:[60,30],maxZoom:16,animate:false});
+  drawMe();
 }
-$("#zin").onclick=function(){zoom=Math.min(4,zoom*1.6);center=null;renderMapZoom()};
-$("#zout").onclick=function(){zoom=Math.max(1,zoom/1.6);if(zoom<1.05)zoom=1;center=null;renderMapZoom()};
-function renderMapZoom(){renderMap()}
+function drawMe(){
+  if(!map||!me)return;
+  var ll=[me.lat,me.lng];
+  if(!meDot){
+    meRing=L.circle(ll,{radius:me.acc||0,stroke:false,fillColor:"#2F7DF6",fillOpacity:.13,interactive:false}).addTo(map);
+    meDot=L.marker(ll,{icon:L.divIcon({className:"",html:'<div class="me-dot"></div>',iconSize:[22,22],iconAnchor:[11,11]}),interactive:false,keyboard:false,zIndexOffset:3000}).addTo(map);
+  }else{meDot.setLatLng(ll);meRing.setLatLng(ll);meRing.setRadius(me.acc||0)}
+}
+function centerMe(){if(map&&me)map.setView([me.lat,me.lng],Math.max(map.getZoom(),16))}
+$("#zin").onclick=function(){if(map)map.zoomIn()};
+$("#zout").onclick=function(){if(map)map.zoomOut()};
+$("#zme").onclick=function(){if(me){centerMe();return}wantCenter=true;startLoc()};
 
 /* ---------- lugares ---------- */
 function renderPlaces(){
@@ -479,11 +533,12 @@ function openSheet(id){
   var h='<span class="cat" style="--c:'+cat.hex+'"><i></i>'+cat.label+'</span><h3>'+esc(p.n)+'</h3><p class="tip">'+esc(p.tip)+'</p>';
   h+='<p class="kv"><b>Endereço:</b> '+esc(p.addr)+'</p><p class="kv"><b>Horário:</b> '+esc(p.hrs)+'</p>';
   if(id!=="hotel")h+='<p class="kv"><b>Do hotel:</b> '+(far?carMin(d)+' min de carro':walkMin(d)+' min a pé ('+fmtKm(d)+')')+'</p>';
-  if(me)h+='<p class="kv"><b>De você:</b> '+fmtKm(hav(me,p))+'</p>';
+  h+='<p class="kv me-kv" data-mek="'+id+'"></p>';
   if(when.length)h+='<p class="kv"><b>No roteiro:</b> '+when.join(" · ")+'</p>';
   h+=actions(p,far);
   if(far)h+='<div class="acts" style="margin-top:8px"><a class="btn" href="'+gmaps(p,"walking")+'" target="_blank" rel="noopener">'+I_WALK+'Ver a pé</a></div>';
   $("#sheetBody").innerHTML=h;
+  updateMe();
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");
 }
 function closeSheet(){$("#sheet").classList.remove("on");$("#scrim").classList.remove("on")}
@@ -495,7 +550,7 @@ var views={plan:renderPlan,map:renderMap,places:renderPlaces,info:function(){}};
 function go(v){
   document.querySelectorAll(".view").forEach(function(s){s.classList.toggle("on",s.id==="v-"+v)});
   document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v)});
-  if(v==="map"){mapDay=cur}
+  if(v==="map"){mapDay=cur;loadLeaflet()}
   views[v]();window.scrollTo(0,0);
   try{if(location.hash!=="#"+v)history.replaceState(null,"","#"+v)}catch(e){}
 }
@@ -508,20 +563,91 @@ document.querySelectorAll("[data-copy]").forEach(function(b){b.onclick=function(
   try{navigator.clipboard.writeText(t).then(function(){toast("Copiado")},function(){toast(t)})}catch(e){toast(t)}
 }});
 
-/* ---------- localização (quando o navegador permitir) ---------- */
-var me=null;
+/* ---------- localização (só depois do toque no botão) ---------- */
+var me=null, watchId=null, wantCenter=false, locState="off", locErr="";
+
+function meText(p,bold){
+  var d=hav(me,p), a=bold?"<b>De você:</b> ":"De você: ";
+  if(d<60)return bold?"<b>Você está aqui</b>":"Você está aqui";
+  return a+(d>60000?Math.round(d/1000)+" km em linha reta":fmtKm(d)+" · "+fmtHM(walkMin(d))+" a pé");
+}
+function updateMe(){
+  if(!me)return;
+  document.querySelectorAll("[data-me]").forEach(function(el){el.innerHTML=I_WALK+meText(P[el.getAttribute("data-me")])});
+  document.querySelectorAll("[data-mek]").forEach(function(el){el.innerHTML=meText(P[el.getAttribute("data-mek")],true)});
+  drawMe();
+}
+function clearMe(){
+  me=null;
+  if(meDot){meDot.remove();meRing.remove();meDot=meRing=null}
+  document.querySelectorAll("[data-me],[data-mek]").forEach(function(el){el.innerHTML=""});
+}
+function drawLocbar(){
+  var h="";
+  if(locState==="on"){
+    h='<div class="locon"><i></i>Localização ativa'+(me&&me.acc?' · precisão de ~'+Math.round(me.acc)+' m':'')+'</div>';
+  }else{
+    if(locErr)h+='<div class="locerr">'+esc(locErr)+'</div>';
+    h+='<button class="locbtn" id="locgo"'+(locState==="wait"?' disabled':'')+'>'+I_NAV+(locState==="wait"?'Procurando você...':(locErr?'Tentar de novo':'Ativar minha localização'))+'</button>';
+    if(!locErr&&locState==="off")h+='<p class="lochint">Mostra a bolinha azul no mapa e a distância até cada parada.</p>';
+  }
+  $("#locbar").innerHTML=h;
+  var b=$("#locgo"); if(b)b.onclick=startLoc;
+  $("#zme").classList.toggle("on",!!me);
+}
+function stopWatch(){if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null}}
+function startLoc(){
+  if(!navigator.geolocation){locErr="Este aparelho não oferece localização no navegador.";locState="off";drawLocbar();return}
+  stopWatch();
+  locErr="";
+  if(!me)locState="wait";
+  drawLocbar();
+  watchId=navigator.geolocation.watchPosition(onPos,onPosErr,{enableHighAccuracy:true,maximumAge:5000,timeout:20000});
+}
+function onPos(pos){
+  me={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:pos.coords.accuracy};
+  locState="on";locErr="";
+  store("jba-loc",true);
+  drawLocbar();updateMe();
+  if(wantCenter){wantCenter=false;centerMe()}
+}
+function onPosErr(e){
+  if(e.code===1){
+    stopWatch();clearMe();wantCenter=false;locState="off";
+    locErr="A localização foi negada. No iPhone, abra Ajustes, Privacidade e Segurança, Serviços de Localização, Sites do Safari, e escolha permitir durante o uso. Depois, feche e abra esta página e toque no botão.";
+    store("jba-loc",false);
+    drawLocbar();
+    return;
+  }
+  if(!me){
+    stopWatch();wantCenter=false;locState="off";
+    locErr="Não consegui achar sua posição agora. Vá para um lugar aberto e tente de novo.";
+    drawLocbar();
+  }
+}
+drawLocbar();
+
+// Se ela já permitiu antes, liga sozinho. Senão, espera o toque no botão.
 try{
-  if(navigator.geolocation){
-    navigator.geolocation.watchPosition(function(pos){
-      me={lat:pos.coords.latitude,lng:pos.coords.longitude};
-      if($("#v-map").classList.contains("on"))renderMap();
-    },function(){},{enableHighAccuracy:true,maximumAge:30000,timeout:15000});
+  if(store("jba-loc")&&navigator.permissions&&navigator.permissions.query){
+    navigator.permissions.query({name:"geolocation"}).then(function(r){if(r.state==="granted")startLoc()},function(){});
   }
 }catch(e){}
+
+// O iPhone congela o app em segundo plano: ao voltar, atualiza o dia e o GPS.
+document.addEventListener("visibilitychange",function(){
+  if(document.visibilityState!=="visible")return;
+  var old=todayIdx;
+  now=new Date();findToday();greet();
+  if(todayIdx!==old&&todayIdx>=0){cur=todayIdx;mapDay=cur}
+  if($("#v-plan").classList.contains("on"))renderPlan();
+  if(watchId!==null)startLoc();
+});
 
 /* ---------- início ---------- */
 var start=(location.hash||"").replace("#","");
 go(views[start]?start:"plan");
+loadLeaflet();
 })();
 </script>
 </body>
