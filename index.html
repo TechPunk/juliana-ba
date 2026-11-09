@@ -76,6 +76,7 @@ h1{font-family:Fraunces,Georgia,serif;font-weight:650;font-size:30px;line-height
 .btn svg{width:16px;height:16px}
 .btn.pri{background:var(--ink);color:#fff}
 .btn.uber{background:#000;color:#fff}
+.btn.rev{background:#FFF1D6;color:#6B4A00}
 .check{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;background:#fff}
 .check svg{width:16px;height:16px;opacity:0}
 .item.done .check{background:var(--fit);border-color:var(--fit)}
@@ -356,6 +357,10 @@ function gmaps(p,mode){return "https://www.google.com/maps/dir/?api=1&destinatio
 function amaps(p,mode){return "https://maps.apple.com/?daddr="+p.lat+","+p.lng+"&q="+encodeURIComponent(p.n)+"&dirflg="+(mode==="driving"?"d":"w")}
 function uber(p){return "https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Blatitude%5D="+p.lat+"&dropoff%5Blongitude%5D="+p.lng+"&dropoff%5Bnickname%5D="+encodeURIComponent(p.n)}
 
+function greviews(p){return "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(p.n+", "+p.addr+", Buenos Aires")+"&query_place_id="+p.pid}
+var I_RATE='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.4 5.7 21l1.5-7L2 9.3l7-.8z"/></svg>';
+function reviewBtn(p){return '<a class="btn rev" href="'+greviews(p)+'" target="_blank" rel="noopener">'+I_RATE+'Fotos e avaliações</a>'}
+
 function actions(p,far){
   var h='<div class="acts">';
   if(far){
@@ -365,6 +370,7 @@ function actions(p,far){
     h+='<a class="btn pri" href="'+gmaps(p,"walking")+'" target="_blank" rel="noopener">'+I_WALK+'Ir a pé</a>';
   }
   h+='<a class="btn" href="'+amaps(p,far?"driving":"walking")+'" target="_blank" rel="noopener">Apple Maps</a>';
+  h+=reviewBtn(p);
   return h+'</div>';
 }
 
@@ -424,6 +430,7 @@ function renderPlan(){
     html+='<span class="me-d" data-me="'+it.p+'"></span>';
     html+='</div>';
     if(it.p!=="hotel"||i>0)html+=actions(p,far);
+    else html+='<div class="acts">'+reviewBtn(p)+'</div>';
     html+='</div></li>';
     if(i<day.items.length-1){
       var nx=P[day.items[i+1].p], d2=hav(p,nx);
