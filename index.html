@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Juliana BA">
+<meta name="theme-color" content="#F7F3EE">
+<title>Juliana em Buenos Aires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F3EE; --card:#FFFFFF; --ink:#1F2340; --muted:#6B6F86; --line:#E7E1D8;
+  --jac:#7B5EA7; --jac-soft:#EEE8F6;
+  --food:#D9734E; --shop:#7B5EA7; --fit:#2E8B7A; --walk:#5B8C3A; --work:#2F5DA8; --base:#1F2340;
+  --r:18px;
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.45}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a{color:inherit}
+.app{max-width:560px;margin:0 auto;min-height:100vh;padding:calc(var(--safe-t) + 14px) 16px calc(var(--safe-b) + 96px)}
+header{padding:6px 4px 10px}
+.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--jac);font-weight:700;display:flex;align-items:center;gap:8px}
+.kicker svg{width:16px;height:16px}
+h1{font-family:Fraunces,Georgia,serif;font-weight:650;font-size:30px;line-height:1.1;margin:6px 0 2px}
+.sub{color:var(--muted);font-size:14px}
+
+/* day chips */
+.days{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 14px;margin:0 -16px;padding-left:16px;padding-right:16px;scrollbar-width:none}
+.days::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;text-align:center;min-width:64px;transition:.15s}
+.chip b{display:block;font-size:18px;font-weight:700;line-height:1.1}
+.chip span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.on span{color:#C9C3E6}
+.chip .today{display:block;font-size:9px;color:var(--food);font-weight:700;letter-spacing:.08em}
+.chip.on .today{color:#FFB79B}
+
+.dayhead{display:flex;justify-content:space-between;align-items:flex-end;margin:4px 4px 12px}
+.dayhead h2{font-family:Fraunces,Georgia,serif;font-size:22px;margin:0;font-weight:650}
+.dayhead .prog{font-size:13px;color:var(--muted);font-weight:600}
+.banner{background:var(--jac-soft);color:#4E3C72;border-radius:14px;padding:10px 12px;font-size:13.5px;margin:0 0 12px;display:flex;gap:8px;align-items:flex-start}
+.banner svg{flex:0 0 18px;margin-top:1px}
+
+/* timeline */
+.tl{position:relative;padding-left:0;margin:0;list-style:none}
+.item{position:relative;display:grid;grid-template-columns:54px 1fr;gap:10px;margin-bottom:6px}
+.time{font-weight:700;font-size:14px;padding-top:16px;text-align:right;color:var(--ink)}
+.time small{display:block;font-weight:600;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.card{background:var(--card);border-radius:var(--r);padding:14px 14px 12px;box-shadow:0 1px 0 rgba(31,35,64,.04),0 6px 18px -12px rgba(31,35,64,.25);border:1px solid rgba(231,225,216,.8);position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,var(--ink))}
+.item.done .card{opacity:.55}
+.item.now .card{outline:2px solid var(--food);outline-offset:0}
+.nowtag{display:inline-block;background:var(--food);color:#fff;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:99px;letter-spacing:.05em;margin-bottom:6px}
+.cat{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--c)}
+.cat i{width:7px;height:7px;border-radius:50%;background:var(--c);display:inline-block}
+.opt{font-size:10.5px;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:1px 7px;margin-left:6px;text-transform:uppercase;letter-spacing:.05em}
+.card h3{margin:4px 0 4px;font-size:17px;font-weight:700;line-height:1.25}
+.note{margin:0 0 8px;font-size:14.5px;color:#383C58}
+.meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12.5px;color:var(--muted);margin-bottom:10px}
+.meta span{display:inline-flex;align-items:center;gap:4px}
+.meta svg{width:14px;height:14px}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;border-radius:12px;font-size:13.5px;font-weight:600;text-decoration:none;background:#F2EEE8;color:var(--ink)}
+.btn svg{width:16px;height:16px}
+.btn.pri{background:var(--ink);color:#fff}
+.btn.uber{background:#000;color:#fff}
+.check{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;background:#fff}
+.check svg{width:16px;height:16px;opacity:0}
+.item.done .check{background:var(--fit);border-color:var(--fit)}
+.item.done .check svg{opacity:1;stroke:#fff}
+.leg{grid-column:2;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;padding:6px 6px 8px}
+.leg svg{width:14px;height:14px}
+.leg.car{color:#8A5A2B}
+
+/* map */
+.mapwrap{background:var(--card);border-radius:22px;border:1px solid var(--line);overflow:hidden;position:relative}
+.mapwrap svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.maplegend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:var(--muted);padding:10px 4px 2px}
+.maplegend span{display:inline-flex;align-items:center;gap:5px}
+.maplegend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.zoom button{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.95);border:1px solid var(--line);font-size:18px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.mapnote{font-size:12px;color:var(--muted);margin:8px 4px 0}
+
+/* list */
+.group h4{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 4px 8px}
+.row{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin-bottom:8px;width:100%;text-align:left}
+.dot{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:0 0 38px;background:var(--c);color:#fff}
+.dot svg{width:19px;height:19px}
+.row .t{flex:1;min-width:0}
+.row .t b{display:block;font-size:15px}
+.row .t span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .d{font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap}
+
+/* info */
+.info .block{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px}
+.info h4{margin:0 0 6px;font-size:15px}
+.info p,.info li{font-size:14px;color:#383C58;margin:4px 0}
+.info ul{padding-left:18px;margin:6px 0}
+.big{font-size:20px;font-weight:700;letter-spacing:.02em}
+.copy{margin-top:8px}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:rgba(20,22,40,.35);opacity:0;pointer-events:none;transition:.2s;z-index:40}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;transform:translateY(105%);transition:transform .25s ease;max-width:560px;margin:0 auto}
+.sheet.on{transform:none}
+.sheet .inner{background:var(--card);border-radius:24px 24px 0 0;padding:10px 18px calc(var(--safe-b) + 18px);box-shadow:0 -10px 30px rgba(0,0,0,.12)}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--line);margin:4px auto 12px}
+.sheet h3{font-family:Fraunces,Georgia,serif;font-size:22px;margin:4px 0 6px}
+.sheet .tip{font-size:14.5px;color:#383C58;margin:0 0 10px}
+.sheet .kv{font-size:13.5px;color:var(--muted);margin:3px 0}
+.sheet .kv b{color:var(--ink);font-weight:600}
+.sheet .acts{margin-top:12px}
+
+/* nav */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(247,243,238,.92);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--line);padding:6px 10px calc(var(--safe-b) + 6px)}
+nav .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:11px;font-weight:600;color:var(--muted)}
+nav button svg{width:23px;height:23px}
+nav button.on{color:var(--jac)}
+.view{display:none}.view.on{display:block}
+.toast{position:fixed;left:50%;bottom:calc(var(--safe-b) + 84px);transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:9px 14px;border-radius:12px;font-size:13px;opacity:0;transition:.2s;z-index:60;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.foot{font-size:11.5px;color:var(--muted);text-align:center;margin:18px 0 0}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="kicker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>Buenos Aires · 9 a 13 nov</div>
+    <h1 id="hello">Oi, Juliana</h1>
+    <div class="sub" id="subline">Seu roteiro, com rotas a um toque.</div>
+  </header>
+
+  <!-- ROTEIRO -->
+  <section class="view on" id="v-plan">
+    <div class="days" id="days"></div>
+    <div class="dayhead"><h2 id="dayTitle"></h2><div class="prog" id="prog"></div></div>
+    <div id="dayBanner"></div>
+    <ol class="tl" id="timeline"></ol>
+  </section>
+
+  <!-- MAPA -->
+  <section class="view" id="v-map">
+    <div class="days" id="mapdays"></div>
+    <div class="mapwrap">
+      <svg id="map" viewBox="0 0 1000 1000" aria-label="Mapa do roteiro"></svg>
+      <div class="zoom"><button id="zin" aria-label="Aproximar">+</button><button id="zout" aria-label="Afastar">−</button></div>
+    </div>
+    <div class="maplegend" id="legend"></div>
+    <p class="mapnote">Mapa esquemático: toque num ponto para ver detalhes e abrir a rota com GPS no Google Maps ou no Apple Maps.</p>
+  </section>
+
+  <!-- LUGARES -->
+  <section class="view" id="v-places">
+    <div id="placelist"></div>
+  </section>
+
+  <!-- INFO -->
+  <section class="view info" id="v-info">
+    <div class="block">
+      <h4>Seu hotel</h4>
+      <p><b>Casa Joseph Libertador</b><br>Av. del Libertador 6320, Núñez</p>
+      <p>WhatsApp: <b>+54 9 11 3813-0404</b></p>
+      <p>Check-in a partir das 15h · check-out às 10h. O hotel tem piscina no terraço, mas não serve café da manhã.</p>
+      <button class="btn copy" data-copy="Av. del Libertador 6320, Buenos Aires">Copiar endereço</button>
+    </div>
+    <div class="block">
+      <h4>Congresso</h4>
+      <p><b>IFIBYNE (UBA-CONICET)</b><br>Ciudad Universitaria, entrada pela Av. Costanera Rafael Obligado</p>
+      <p>No Uber, digite <b>IFIBYNE, Ciudad Universitaria</b>. São 10 a 15 min do hotel, ou ~20 min no horário de pico.</p>
+      <button class="btn copy" data-copy="IFIBYNE, Ciudad Universitaria, Buenos Aires">Copiar destino</button>
+    </div>
+    <div class="block">
+      <h4>Emergência</h4>
+      <p><span class="big">911</span> polícia · <span class="big">107</span> ambulância (SAME)</p>
+    </div>
+    <div class="block">
+      <h4>Dicas rápidas</h4>
+      <ul>
+        <li>Na calçada, mantenha o celular guardado; em Buenos Aires há roubos de moto ("motochorros").</li>
+        <li>À noite, prefira Uber, mesmo para trajetos curtos.</li>
+        <li>Portenho janta tarde: os restaurantes enchem a partir das 21h. Para o Mago e o Evelia, reserve.</li>
+        <li>Gorjeta habitual: cerca de 10%.</li>
+        <li>Natação: leve touca e óculos. Clubes às vezes pedem um "apto físico" (atestado simples).</li>
+        <li>Em novembro os jacarandás estão floridos: o Rosedal e as Barrancas ficam lindos.</li>
+        <li>Para usar como app: no Safari, toque em <b>Compartilhar → Adicionar à Tela de Início</b>.</li>
+      </ul>
+    </div>
+    <p class="foot">Feito com carinho para a sua viagem. Horários de funcionamento podem mudar; confira antes de ir.</p>
+  </section>
+</div>
+
+<nav><div class="in">
+  <button data-v="plan" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>Roteiro</button>
+  <button data-v="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>Mapa</button>
+  <button data-v="places"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Lugares</button>
+  <button data-v="info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Info</button>
+</div></nav>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet"><div class="inner"><div class="grab"></div><div id="sheetBody"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- dados ---------- */
+var CATS = {
+  base:{label:"Hotel", c:"var(--base)", hex:"#1F2340", ico:"bed"},
+  food:{label:"Comer", c:"var(--food)", hex:"#D9734E", ico:"fork"},
+  shop:{label:"Compras", c:"var(--shop)", hex:"#7B5EA7", ico:"bag"},
+  fit:{label:"Treino", c:"var(--fit)", hex:"#2E8B7A", ico:"swim"},
+  walk:{label:"Passeio", c:"var(--walk)", hex:"#5B8C3A", ico:"leaf"},
+  work:{label:"Congresso", c:"var(--work)", hex:"#2F5DA8", ico:"badge"}
+};
+
+var P = {
+  hotel:{n:"Casa Joseph Libertador", cat:"base", addr:"Av. del Libertador 6320", hrs:"Recepção 24h", lat:-34.553868, lng:-58.450464, pid:"ChIJ81mbazK0vJURvtnJIjFrD98", tip:"Sua base. Piscina no terraço; sem café da manhã, mas há ótimos cafés a 5 minutos."},
+  barrancas:{n:"Barrancas de Belgrano", cat:"walk", addr:"Av. Juramento 1792", hrs:"Aberto 24h", lat:-34.5598742, lng:-58.4498022, pid:"ChIJU67dZ821vJURhofbEonrZiA", tip:"Um dos parques mais bonitos da cidade. Ao lado: Barrio Chino (rua Arribeños) e a Av. Cabildo, cheia de lojas."},
+  chalaca:{n:"Barra Chalaca", cat:"food", addr:"Montañeses 2585", hrs:"Todos os dias, 12:30 às 0h", lat:-34.5529157, lng:-58.452613, pid:"ChIJ4wH0zkbTvJURuVGWPsI-GVc", tip:"Peruano a 3 quadras do hotel. Ceviche chalaco, wantacos e pisco sour de maracujá."},
+  sportclub:{n:"SportClub Libertador", cat:"fit", addr:"Av. del Libertador 7395", hrs:"Seg a sex 7h às 22h · sáb 9h às 21h · dom fechado", lat:-34.5450563, lng:-58.4589731, pid:"ChIJof9dyCa0vJURGjmNHHXqJ4A", tip:"Academia completa com piscina. Peça um 'pase diario' na recepção. Leve touca e óculos; podem pedir 'apto físico'."},
+  usina:{n:"Usina Cafetera Núñez", cat:"food", addr:"Franklin D. Roosevelt 1897", hrs:"Todos os dias, 8:30 às 20h", lat:-34.5544374, lng:-58.4561412, pid:"ChIJHeIxJAC1vJURFvoVASpAG4s", tip:"Um dos melhores cafés de Buenos Aires. Brunch caprichado e a marquise de doce de leite é famosa."},
+  santantoni:{n:"Sant Antoni Clothes", cat:"shop", addr:"El Salvador 4666, Palermo Soho", hrs:"Todos os dias, 11h às 20h", lat:-34.589715, lng:-58.426854, pid:"ChIJpSihakW1vJURkqc1qI1mFM0", tip:"Roupa feminina de boa qualidade, atendimento muito elogiado."},
+  rimmel:{n:"Rimmel Palermo Soho", cat:"shop", addr:"Malabia 1718, Palermo Soho", hrs:"Seg a sáb 11h às 20h · dom 13h às 20h", lat:-34.58992, lng:-58.4259499, pid:"ChIJASYEgoe1vJURbADtogUAqXo", tip:"Vestidos de festa e peças para todos os estilos."},
+  cucina:{n:"Cucina Paradiso", cat:"food", addr:"Armenia 1610, Palermo Soho", hrs:"Todos os dias, 9h às 0h", lat:-34.5898451, lng:-58.4281481, pid:"ChIJbZWxdDC1vJURI_1enmcssws", tip:"Italiano excelente. Peça a busiata com camarão ou o polvo."},
+  tomate:{n:"Tomate Estación de Sabores", cat:"food", addr:"El Salvador 4676, Palermo Soho", hrs:"Todos os dias, 9h à 1h", lat:-34.5896507, lng:-58.4269674, pid:"ChIJ0Srszy61vJUR44FG4VNpvyo", tip:"Alternativa de almoço com 'menu ejecutivo' e um pátio lindo nos fundos."},
+  hermana:{n:"HERMANA", cat:"shop", addr:"El Salvador 4788, 2º andar, apto 6", hrs:"Ter a sex 13h às 19h · sáb 12h às 19h", lat:-34.588876, lng:-58.4280844, pid:"ChIJGwqD84e1vJURPBGRC2RI5xQ", tip:"Showroom de marca autoral: vestidos e conjuntos com tecido de ótima qualidade."},
+  luxo:{n:"LUXO Palermo Soho", cat:"shop", addr:"Gurruchaga 1744, Palermo Soho", hrs:"Seg a sex 12h às 20h · fim de semana até 20h", lat:-34.5883466, lng:-58.4278886, pid:"ChIJozrTMoa1vJURk3qqw1SdN2k", tip:"Muitas marcas num lugar só. Nas ruas ao redor, procure Jazmín Chebar, María Cher, Rapsodia e Ayres."},
+  rosedal:{n:"El Rosedal", cat:"walk", addr:"Bosques de Palermo", hrs:"Ter a dom 8h às 18h · seg fechado", lat:-34.5706506, lng:-58.4172996, pid:"ChIJ10xgN561vJURkon23PB48-E", tip:"Roseiral à beira do lago, perfeito para uma caminhada no fim da tarde."},
+  alcorta:{n:"Paseo Alcorta", cat:"shop", addr:"Jerónimo Salguero 3172", hrs:"Todos os dias, 10h às 21h", lat:-34.5751782, lng:-58.4042515, pid:"ChIJHTUBa2W1vJURQCM7T-XimY8", tip:"O shopping mais sofisticado da região, com as grifes argentinas. Tranquilo e sem fila."},
+  mago:{n:"Mago · Parrilla de Mercado", cat:"food", addr:"Monroe 1595", hrs:"Ter a dom, 12h às 15:30 e 20h às 0h · seg fechado", lat:-34.553448, lng:-58.4520963, pid:"ChIJT3fGzUm1vJURBCNqgsV08-A", tip:"Nota 4,9: a melhor carne da região, a 2 quadras do hotel. Peça as mollejas. Reserve."},
+  napp:{n:"Napp (academia)", cat:"fit", addr:"Montañeses 2541", hrs:"Seg a sex 7h às 22h · sáb 8:30 às 14h", lat:-34.5532719, lng:-58.4523539, pid:"ChIJMaWb5C20vJURZJ3q0QaH_PI", tip:"Academia de bairro bem equipada, a 3 quadras do hotel. Peça um 'pase diario'."},
+  siba:{n:"Siba Café Especial", cat:"food", addr:"Montañeses 2999", hrs:"Seg a sex 8h às 20h", lat:-34.5492318, lng:-58.4559697, pid:"ChIJdcgnctK1vJURJ8k4EU_8b3Q", tip:"Café de especialidade num espaço lindo. Cold brew e doces excelentes."},
+  ifibyne:{n:"IFIBYNE · Congresso", cat:"work", addr:"Ciudad Universitaria, Av. Costanera Rafael Obligado", hrs:"Confira o programa do congresso", lat:-34.5424659, lng:-58.4389073, pid:"ChIJEyRTlke0vJURpgZZe_328ps", tip:"No Uber, digite 'IFIBYNE, Ciudad Universitaria' para descer na porta do pavilhão."},
+  evelia:{n:"Evelia", cat:"food", addr:"Campos Salles 1712", hrs:"Ter a dom, 12h às 15:30 e 19:30 às 0h · seg fechado", lat:-34.5484044, lng:-58.4584344, pid:"ChIJsUV-rD61vJUR7riYcLg3KDE", tip:"Massas incríveis: nhoque com trufa e agnolotti. Reserve."},
+  cantina:{n:"Cantina Núñez", cat:"food", addr:"Manuel Ugarte 1682", hrs:"Todos os dias, 12h às 16h e 20h às 0h", lat:-34.552635, lng:-58.4544395, pid:"ChIJCcxyN3m1vJURufgX_uDk_UM", tip:"Bodegón de bairro: massa caseira, milanesa e panqueca de doce de leite."},
+  mishiguene:{n:"Café Mishiguene", cat:"food", addr:"Congreso 1602", hrs:"Todos os dias, 9h às 0h", lat:-34.5513344, lng:-58.4542732, pid:"ChIJa99Ue4O1vJUR44pJXfJJaF8", tip:"Cozinha de inspiração israelense. O homus de brócolis é ótimo. Bom para jantar leve."},
+  pobreluis:{n:"El Pobre Luis", cat:"food", addr:"Arribeños 2393", hrs:"Todos os dias, almoço e jantar (dom só almoço)", lat:-34.5553424, lng:-58.4522461, pid:"ChIJjSIcnS20vJURTTlKe4xJk08", tip:"Parrilla uruguaia clássica do bairro, a 3 minutos a pé."}
+};
+
+var DAYS = [
+  {d:9, wd:"Seg", title:"Chegada e o bairro a pé", items:[
+    {t:"15:00", p:"hotel", note:"Check-in. Se o tempo estiver bom, um mergulho na piscina do terraço."},
+    {t:"17:30", p:"barrancas", note:"Caminhada de fim de tarde. Ao lado ficam o Barrio Chino e a Av. Cabildo, boa para olhar vitrines."},
+    {t:"20:30", p:"chalaca", note:"Jantar peruano a 3 quadras do hotel. Peça o ceviche chalaco e o pisco sour de maracujá."}
+  ]},
+  {d:10, wd:"Ter", title:"Natação e compras em Palermo", items:[
+    {t:"07:45", p:"sportclub", note:"Natação. São uns 20 min a pé pela Av. del Libertador (ou 5 min de Uber). Leve touca e peça um 'pase diario'."},
+    {t:"09:30", p:"usina", note:"Café da manhã sem pressa. Não deixe de provar a marquise de doce de leite."},
+    {t:"11:00", p:"santantoni", note:"Comece as compras em Palermo Soho. Do café, é um Uber de uns 15 min."},
+    {t:"11:45", p:"rimmel", note:"Vestidos e roupas femininas, com atendimento muito atencioso."},
+    {t:"13:00", p:"cucina", note:"Almoço. Se preferir algo mais leve, o Tomate fica na mesma quadra."},
+    {t:"14:15", p:"hermana", note:"Showroom autoral (2º andar, apto 6). Abre às 13h."},
+    {t:"15:00", p:"luxo", note:"Muitas marcas num lugar só. Depois, explore as ruas Gurruchaga, Honduras e Armenia."},
+    {t:"16:30", p:"rosedal", note:"Caminhada no roseiral e no lago. Fecha às 18h. São uns 10 min de Uber a partir de Palermo Soho."},
+    {t:"17:30", p:"alcorta", opt:true, note:"Se ainda quiser comprar: as grifes argentinas, a uns 15 min a pé do Rosedal. Depois, Uber de volta ao hotel."},
+    {t:"20:30", p:"mago", note:"Jantar a 2 quadras do hotel: a melhor parrilla da região. Reserve."}
+  ]},
+  {d:11, wd:"Qua", title:"Congresso, dia 1", banner:"Os horários do congresso são aproximados. Ajuste conforme o programa oficial.", items:[
+    {t:"07:00", p:"napp", opt:true, note:"Treino rápido a 3 quadras do hotel. Peça um 'pase diario'."},
+    {t:"08:00", p:"siba", note:"Café da manhã. Abre às 8h em ponto."},
+    {t:"08:45", p:"ifibyne", note:"Congresso. Uber de 10 a 15 min; no app, digite 'IFIBYNE, Ciudad Universitaria'."},
+    {t:"21:00", p:"evelia", note:"Jantar especial: massas incríveis, a 12 min a pé do hotel. Reserve."}
+  ]},
+  {d:12, wd:"Qui", title:"Congresso e natação", banner:"Os horários do congresso são aproximados. Ajuste conforme o programa oficial.", items:[
+    {t:"08:30", p:"usina", note:"Café da manhã. Abre às 8:30."},
+    {t:"09:15", p:"ifibyne", note:"Congresso. Uber de 10 a 15 min."},
+    {t:"18:30", p:"sportclub", note:"Natação depois do congresso para relaxar. Fica aberto até as 22h. Do IFIBYNE, são uns 10 min de Uber."},
+    {t:"21:00", p:"cantina", note:"Jantar descontraído: massa caseira e panqueca de doce de leite."}
+  ]},
+  {d:13, wd:"Sex", title:"Despedida", items:[
+    {t:"08:30", p:"usina", note:"Último café da manhã em Buenos Aires."},
+    {t:"10:00", p:"hotel", note:"Check-out às 10h. O hotel guarda as malas, se precisar."}
+  ]}
+];
+
+/* ---------- utilidades ---------- */
+function $(s,r){return (r||document).querySelector(s)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]})}
+function hav(a,b){var R=6371000,t=Math.PI/180,dLa=(b.lat-a.lat)*t,dLo=(b.lng-a.lng)*t,x=Math.sin(dLa/2)*Math.sin(dLa/2)+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(dLo/2)*Math.sin(dLo/2);return 2*R*Math.asin(Math.sqrt(x))}
+function walkMin(m){return Math.max(1,Math.round(m*1.3/80))}
+function carMin(m){return Math.max(5,Math.round(m*1.4/1000/24*60)+3)}
+function fmtKm(m){var r=m*1.3;return r<1000?Math.round(r/50)*50+" m":(r/1000).toFixed(1).replace(".",",")+" km"}
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+var done = store("jba-done")||{};
+
+var ICON = {
+  bed:'<path d="M3 18V7M21 18v-5a3 3 0 0 0-3-3h-7v8M3 14h18"/><circle cx="7" cy="11" r="1.6"/>',
+  fork:'<path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v5M9 3v5M17 3c-2 2-2.5 5-2 8h2v10"/>',
+  bag:'<path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+  swim:'<path d="M2 18c2 0 2-1.5 4-1.5S8 18 10 18s2-1.5 4-1.5 2 1.5 4 1.5 2-1.5 4-1.5"/><circle cx="16" cy="7" r="2"/><path d="m4 14 5-4 3 2.5 3-2"/>',
+  leaf:'<path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15"/><path d="M5 19 13 11"/>',
+  badge:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v3h6V3M9 12h6M9 16h4"/>'
+};
+function ico(k){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICON[k]+'</svg>'}
+var I_WALK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="m9 21 2-6 3 3v3M7 12l3-4 4 2 3 3M10 8l-1 5"/></svg>';
+var I_CAR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16V11l2-5h10l2 5v5"/><path d="M3 16h18v2H3z"/><circle cx="7.5" cy="13" r=".8"/><circle cx="16.5" cy="13" r=".8"/></svg>';
+var I_CLOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+var I_PIN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+var I_NAV='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4.5 20.3l.7.7L12 18l6.8 3 .7-.7z"/></svg>';
+var I_CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
+var I_INFO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>';
+
+function gmaps(p,mode){return "https://www.google.com/maps/dir/?api=1&destination="+p.lat+","+p.lng+"&destination_place_id="+p.pid+"&travelmode="+(mode||"walking")}
+function amaps(p,mode){return "https://maps.apple.com/?daddr="+p.lat+","+p.lng+"&q="+encodeURIComponent(p.n)+"&dirflg="+(mode==="driving"?"d":"w")}
+function uber(p){return "https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff%5Blatitude%5D="+p.lat+"&dropoff%5Blongitude%5D="+p.lng+"&dropoff%5Bnickname%5D="+encodeURIComponent(p.n)}
+
+function actions(p,far){
+  var h='<div class="acts">';
+  if(far){
+    h+='<a class="btn uber" href="'+uber(p)+'" target="_blank" rel="noopener">'+I_CAR+'Uber</a>';
+    h+='<a class="btn pri" href="'+gmaps(p,"driving")+'" target="_blank" rel="noopener">'+I_NAV+'Google Maps</a>';
+  }else{
+    h+='<a class="btn pri" href="'+gmaps(p,"walking")+'" target="_blank" rel="noopener">'+I_WALK+'Ir a pé</a>';
+  }
+  h+='<a class="btn" href="'+amaps(p,far?"driving":"walking")+'" target="_blank" rel="noopener">Apple Maps</a>';
+  return h+'</div>';
+}
+
+/* ---------- dia atual ---------- */
+var now=new Date();
+var todayIdx=-1;
+if(now.getFullYear()===2026&&now.getMonth()===10){DAYS.forEach(function(d,i){if(d.d===now.getDate())todayIdx=i})}
+var cur = todayIdx>=0?todayIdx:(store("jba-day")||0);
+if(cur<0||cur>=DAYS.length)cur=0;
+
+(function greet(){
+  var h=now.getHours(), g=h<12?"Bom dia":h<19?"Boa tarde":"Boa noite";
+  $("#hello").textContent=g+", Juliana";
+  if(todayIdx>=0) $("#subline").textContent="Hoje é "+DAYS[todayIdx].title.toLowerCase()+".";
+})();
+
+function chips(el,onPick,sel){
+  el.innerHTML=DAYS.map(function(d,i){
+    return '<button class="chip'+(i===sel?' on':'')+'" data-i="'+i+'">'+(i===todayIdx?'<span class="today">HOJE</span>':'')+'<span>'+d.wd+'</span><b>'+d.d+'</b></button>';
+  }).join("");
+  el.querySelectorAll(".chip").forEach(function(b){b.onclick=function(){onPick(+b.dataset.i)}});
+  var on=el.querySelector(".on"); if(on&&on.scrollIntoView) setTimeout(function(){on.scrollIntoView({inline:"center",block:"nearest"})},50);
+}
+
+function minutes(t){var a=t.split(":");return +a[0]*60+ +a[1]}
+
+/* ---------- roteiro ---------- */
+function renderPlan(){
+  var day=DAYS[cur];
+  chips($("#days"),function(i){cur=i;store("jba-day",i);renderPlan()},cur);
+  $("#dayTitle").textContent=day.wd+" "+day.d+" · "+day.title;
+  $("#dayBanner").innerHTML=day.banner?'<div class="banner">'+I_INFO+'<div>'+esc(day.banner)+'</div></div>':"";
+  var nowIdx=-1;
+  if(cur===todayIdx){var m=now.getHours()*60+now.getMinutes();day.items.forEach(function(it,i){if(minutes(it.t)<=m+45)nowIdx=i})}
+  var hotel=P.hotel, html="", nDone=0;
+  day.items.forEach(function(it,i){
+    var p=P[it.p], cat=CATS[p.cat], key=day.d+"-"+i, isDone=!!done[key];
+    if(isDone)nDone++;
+    var prev=i>0?P[day.items[i-1].p]:hotel;
+    var dist=hav(prev,p), far=dist>2200;
+    var fromHotel=hav(hotel,p);
+    html+='<li class="item'+(isDone?' done':'')+(i===nowIdx&&!isDone?' now':'')+'" style="--c:'+cat.c+'">';
+    html+='<div class="time">'+it.t+'</div>';
+    html+='<div class="card" style="--c:'+cat.c+'">';
+    if(i===nowIdx&&!isDone)html+='<div class="nowtag">AGORA / PRÓXIMO</div><br>';
+    html+='<span class="cat"><i></i>'+cat.label+'</span>'+(it.opt?'<span class="opt">opcional</span>':'');
+    html+='<button class="check" data-k="'+key+'" aria-label="Marcar como feito">'+I_CHECK+'</button>';
+    html+='<h3>'+esc(p.n)+'</h3>';
+    html+='<p class="note">'+esc(it.note)+'</p>';
+    html+='<div class="meta"><span>'+I_CLOCK+esc(p.hrs)+'</span>';
+    if(it.p!=="hotel")html+='<span>'+I_PIN+(fromHotel>2200?carMin(fromHotel)+' min de carro':walkMin(fromHotel)+' min a pé')+' do hotel</span>';
+    html+='</div>';
+    if(it.p!=="hotel"||i>0)html+=actions(p,far);
+    html+='</div></li>';
+    if(i<day.items.length-1){
+      var nx=P[day.items[i+1].p], d2=hav(p,nx);
+      if(d2>60){
+        var car=d2>2200;
+        html+='<li class="item" style="margin:0"><div></div><div class="leg'+(car?' car':'')+'">'+(car?I_CAR+'Uber ~'+carMin(d2)+' min até o próximo':I_WALK+walkMin(d2)+' min a pé até o próximo ('+fmtKm(d2)+')')+'</div></li>';
+      }
+    }
+  });
+  $("#timeline").innerHTML=html;
+  $("#prog").textContent=nDone+"/"+day.items.length+" feitos";
+  $("#timeline").querySelectorAll(".check").forEach(function(b){
+    b.onclick=function(){var k=b.dataset.k;done[k]=!done[k];store("jba-done",done);renderPlan();if(done[k])toast("Feito ✓")};
+  });
+}
+
+/* ---------- mapa ---------- */
+var mapDay=cur, zoom=1, center=null;
+var ids=Object.keys(P);
+var minLat=Infinity,maxLat=-Infinity,minLng=Infinity,maxLng=-Infinity;
+ids.forEach(function(k){var p=P[k];minLat=Math.min(minLat,p.lat);maxLat=Math.max(maxLat,p.lat);minLng=Math.min(minLng,p.lng);maxLng=Math.max(maxLng,p.lng)});
+var COS=Math.cos(-34.565*Math.PI/180), PAD=0.006;
+minLat-=PAD;maxLat+=PAD;minLng-=PAD;maxLng+=PAD;
+var W=(maxLng-minLng)*COS, H=(maxLat-minLat), S=Math.max(W,H);
+function xy(lat,lng){return [((lng-minLng)*COS + (S-W)/2)/S*1000, ((maxLat-lat) + (S-H)/2)/S*1000]}
+
+function renderMap(){
+  chips($("#mapdays"),function(i){mapDay=i;center=null;zoom=1;renderMap()},mapDay);
+  var svg=$("#map"), day=DAYS[mapDay], used={};
+  day.items.forEach(function(it){used[it.p]=1});
+  var vb=1000/zoom, c=center||(function(){
+    var xs=[],ys=[];day.items.forEach(function(it){var q=xy(P[it.p].lat,P[it.p].lng);xs.push(q[0]);ys.push(q[1])});
+    return [(Math.min.apply(0,xs)+Math.max.apply(0,xs))/2,(Math.min.apply(0,ys)+Math.max.apply(0,ys))/2];
+  })();
+  if(zoom===1)c=[500,500];
+  var x0=Math.max(0,Math.min(1000-vb,c[0]-vb/2)), y0=Math.max(0,Math.min(1000-vb,c[1]-vb/2));
+  svg.setAttribute("viewBox",x0+" "+y0+" "+vb+" "+vb);
+  var k=1/zoom, s='';
+  s+='<defs><pattern id="g" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#EFE9E0" stroke-width="1.5"/></pattern></defs>';
+  s+='<rect x="0" y="0" width="1000" height="1000" fill="#FBF8F4"/><rect width="1000" height="1000" fill="url(#g)"/>';
+  // rio (aproximado, nordeste)
+  var r1=xy(-34.536,-58.452), r2=xy(-34.541,-58.432), r3=xy(-34.556,-58.412), r4=xy(-34.568,-58.396);
+  s+='<path d="M'+r1[0]+' -20 L'+r1[0]+' '+r1[1]+' Q'+r2[0]+' '+(r2[1]+10)+' '+r3[0]+' '+r3[1]+' T'+r4[0]+' '+r4[1]+' L1020 '+r4[1]+' L1020 -20 Z" fill="#DCE8F0"/>';
+  var rl=xy(-34.538,-58.416);
+  s+='<text x="'+rl[0]+'" y="'+rl[1]+'" font-size="'+(20*k)+'" fill="#6E8FA6" font-style="italic" font-family="Fraunces,serif" text-anchor="middle">Río de la Plata</text>';
+  // Av. del Libertador (aproximada)
+  var L=[[-34.5451,-58.4590],[-34.553868,-58.450464],[-34.5640,-58.4370],[-34.5706,-58.4220],[-34.5790,-58.4040]].map(function(q){return xy(q[0],q[1])});
+  s+='<polyline points="'+L.map(function(q){return q.join(",")}).join(" ")+'" fill="none" stroke="#E6DED2" stroke-width="'+(14*k)+'" stroke-linecap="round" stroke-linejoin="round"/>';
+  var lb=xy(-34.5615,-58.4425);
+  s+='<text x="'+lb[0]+'" y="'+lb[1]+'" font-size="'+(14*k)+'" fill="#A69C8C" font-weight="600" transform="rotate(-38 '+lb[0]+' '+lb[1]+')" text-anchor="middle">Av. del Libertador</text>';
+  // bairros
+  [["NÚÑEZ",-34.5455,-58.4655],["BELGRANO",-34.5625,-58.4590],["PALERMO SOHO",-34.5950,-58.4330],["PALERMO",-34.5770,-58.4250],["CIUDAD UNIVERSITARIA",-34.5390,-58.4440]].forEach(function(n){
+    var q=xy(n[1],n[2]);s+='<text x="'+q[0]+'" y="'+q[1]+'" font-size="'+(15*k)+'" letter-spacing="'+(3*k)+'" fill="#C2B8A8" font-weight="700" text-anchor="middle">'+n[0]+'</text>';
+  });
+  // outros pontos (apagados)
+  ids.forEach(function(id){if(used[id])return;var p=P[id],q=xy(p.lat,p.lng);
+    s+='<circle class="pt" data-id="'+id+'" cx="'+q[0]+'" cy="'+q[1]+'" r="'+(9*k)+'" fill="'+CATS[p.cat].hex+'" opacity=".28"/>';
+  });
+  // rota do dia
+  var pts=day.items.map(function(it){return xy(P[it.p].lat,P[it.p].lng)});
+  s+='<polyline points="'+pts.map(function(q){return q.join(",")}).join(" ")+'" fill="none" stroke="#1F2340" stroke-opacity=".55" stroke-width="'+(3.5*k)+'" stroke-dasharray="'+(10*k)+' '+(8*k)+'" stroke-linecap="round"/>';
+  // hotel
+  var h=xy(P.hotel.lat,P.hotel.lng);
+  s+='<g class="pt" data-id="hotel"><circle cx="'+h[0]+'" cy="'+h[1]+'" r="'+(22*k)+'" fill="#1F2340"/><path transform="translate('+(h[0]-11*k)+' '+(h[1]-11*k)+') scale('+(0.92*k)+')" d="M12 2l3 6.5 7 .8-5.2 4.7 1.5 7L12 17.4 5.7 21l1.5-7L2 9.3l7-.8z" fill="#FFD27A"/></g>';
+  // pontos do dia numerados
+  var seen={};
+  day.items.forEach(function(it,i){
+    var p=P[it.p];if(it.p==="hotel")return;
+    var q=xy(p.lat,p.lng), off=seen[it.p]?14*k:0; seen[it.p]=1;
+    s+='<g class="pt" data-id="'+it.p+'"><circle cx="'+(q[0]+off)+'" cy="'+(q[1]-off)+'" r="'+(17*k)+'" fill="'+CATS[p.cat].hex+'" stroke="#fff" stroke-width="'+(3*k)+'"/><text x="'+(q[0]+off)+'" y="'+(q[1]-off+6*k)+'" font-size="'+(17*k)+'" font-weight="700" fill="#fff" text-anchor="middle">'+(i+1)+'</text></g>';
+  });
+  // posição (se o navegador permitir)
+  if(me){var mq=xy(me.lat,me.lng);s+='<circle cx="'+mq[0]+'" cy="'+mq[1]+'" r="'+(26*k)+'" fill="#2F7DF6" opacity=".18"/><circle cx="'+mq[0]+'" cy="'+mq[1]+'" r="'+(10*k)+'" fill="#2F7DF6" stroke="#fff" stroke-width="'+(3*k)+'"/>'}
+  svg.innerHTML=s;
+  svg.querySelectorAll(".pt").forEach(function(g){g.style.cursor="pointer";g.addEventListener("click",function(){openSheet(g.getAttribute("data-id"))})});
+  $("#legend").innerHTML=Object.keys(CATS).filter(function(c){return c!=="base"}).map(function(c){return '<span><i style="background:'+CATS[c].hex+'"></i>'+CATS[c].label+'</span>'}).join("")+'<span>★ seu hotel</span>';
+}
+$("#zin").onclick=function(){zoom=Math.min(4,zoom*1.6);center=null;renderMapZoom()};
+$("#zout").onclick=function(){zoom=Math.max(1,zoom/1.6);if(zoom<1.05)zoom=1;center=null;renderMapZoom()};
+function renderMapZoom(){renderMap()}
+
+/* ---------- lugares ---------- */
+function renderPlaces(){
+  var order=["fit","food","shop","walk","work","base"], html="";
+  order.forEach(function(c){
+    var list=ids.filter(function(id){return P[id].cat===c}).sort(function(a,b){return hav(P.hotel,P[a])-hav(P.hotel,P[b])});
+    if(!list.length)return;
+    html+='<div class="group"><h4>'+CATS[c].label+'</h4>';
+    list.forEach(function(id){var p=P[id],d=hav(P.hotel,p);
+      html+='<button class="row" data-id="'+id+'"><div class="dot" style="--c:'+CATS[c].hex+'">'+ico(CATS[c].ico)+'</div><div class="t"><b>'+esc(p.n)+'</b><span>'+esc(p.addr)+'</span></div><div class="d">'+(id==="hotel"?"base":(d>2200?carMin(d)+" min 🚗":walkMin(d)+" min a pé"))+'</div></button>';
+    });
+    html+='</div>';
+  });
+  $("#placelist").innerHTML=html;
+  $("#placelist").querySelectorAll(".row").forEach(function(b){b.onclick=function(){openSheet(b.dataset.id)}});
+}
+
+/* ---------- sheet ---------- */
+function openSheet(id){
+  var p=P[id], d=hav(P.hotel,p), far=d>2200, cat=CATS[p.cat];
+  var when=[];DAYS.forEach(function(dy){dy.items.forEach(function(it){if(it.p===id)when.push(dy.wd+" "+dy.d+", "+it.t)})});
+  var h='<span class="cat" style="--c:'+cat.hex+'"><i></i>'+cat.label+'</span><h3>'+esc(p.n)+'</h3><p class="tip">'+esc(p.tip)+'</p>';
+  h+='<p class="kv"><b>Endereço:</b> '+esc(p.addr)+'</p><p class="kv"><b>Horário:</b> '+esc(p.hrs)+'</p>';
+  if(id!=="hotel")h+='<p class="kv"><b>Do hotel:</b> '+(far?carMin(d)+' min de carro':walkMin(d)+' min a pé ('+fmtKm(d)+')')+'</p>';
+  if(me)h+='<p class="kv"><b>De você:</b> '+fmtKm(hav(me,p))+'</p>';
+  if(when.length)h+='<p class="kv"><b>No roteiro:</b> '+when.join(" · ")+'</p>';
+  h+=actions(p,far);
+  if(far)h+='<div class="acts" style="margin-top:8px"><a class="btn" href="'+gmaps(p,"walking")+'" target="_blank" rel="noopener">'+I_WALK+'Ver a pé</a></div>';
+  $("#sheetBody").innerHTML=h;
+  $("#sheet").classList.add("on");$("#scrim").classList.add("on");
+}
+function closeSheet(){$("#sheet").classList.remove("on");$("#scrim").classList.remove("on")}
+$("#scrim").onclick=closeSheet;
+(function(){var y0=null,sh=$("#sheet");sh.addEventListener("touchstart",function(e){y0=e.touches[0].clientY},{passive:true});sh.addEventListener("touchend",function(e){if(y0!==null&&e.changedTouches[0].clientY-y0>60)closeSheet();y0=null},{passive:true})})();
+
+/* ---------- navegação ---------- */
+var views={plan:renderPlan,map:renderMap,places:renderPlaces,info:function(){}};
+function go(v){
+  document.querySelectorAll(".view").forEach(function(s){s.classList.toggle("on",s.id==="v-"+v)});
+  document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v)});
+  if(v==="map"){mapDay=cur}
+  views[v]();window.scrollTo(0,0);
+  try{if(location.hash!=="#"+v)history.replaceState(null,"","#"+v)}catch(e){}
+}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){go(b.dataset.v)}});
+
+/* ---------- copiar ---------- */
+function toast(t){var el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(function(){el.classList.remove("on")},1600)}
+document.querySelectorAll("[data-copy]").forEach(function(b){b.onclick=function(){
+  var t=b.getAttribute("data-copy");
+  try{navigator.clipboard.writeText(t).then(function(){toast("Copiado")},function(){toast(t)})}catch(e){toast(t)}
+}});
+
+/* ---------- localização (quando o navegador permitir) ---------- */
+var me=null;
+try{
+  if(navigator.geolocation){
+    navigator.geolocation.watchPosition(function(pos){
+      me={lat:pos.coords.latitude,lng:pos.coords.longitude};
+      if($("#v-map").classList.contains("on"))renderMap();
+    },function(){},{enableHighAccuracy:true,maximumAge:30000,timeout:15000});
+  }
+}catch(e){}
+
+/* ---------- início ---------- */
+var start=(location.hash||"").replace("#","");
+go(views[start]?start:"plan");
+})();
+</script>
+</body>
+</html>
