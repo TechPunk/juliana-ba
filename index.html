@@ -232,7 +232,6 @@ nav button.on{color:var(--jac)}
         <li>À noite, prefira Uber, mesmo para trajetos curtos.</li>
         <li>Portenho janta tarde: os restaurantes enchem a partir das 21h. Para o Mago e o Evelia, reserve.</li>
         <li>Gorjeta habitual: cerca de 10%.</li>
-        <li>Natação: leve touca e óculos. Clubes às vezes pedem um "apto físico" (atestado simples).</li>
         <li>Em novembro os jacarandás estão floridos: o Rosedal e as Barrancas ficam lindos.</li>
         <li>Para usar como app: no Safari, toque em <b>Compartilhar → Adicionar à Tela de Início</b>.</li>
       </ul>
@@ -272,7 +271,6 @@ var P = {
   hotel:{n:"Casa Joseph Libertador", cat:"base", addr:"Av. del Libertador 6320", hrs:"Recepção 24h", lat:-34.553868, lng:-58.450464, pid:"ChIJ81mbazK0vJURvtnJIjFrD98", tip:"Sua base. Piscina no terraço; sem café da manhã, mas há ótimos cafés a 5 minutos."},
   barrancas:{n:"Barrancas de Belgrano", cat:"walk", addr:"Av. Juramento 1792", hrs:"Aberto 24h", lat:-34.5598742, lng:-58.4498022, pid:"ChIJU67dZ821vJURhofbEonrZiA", tip:"Um dos parques mais bonitos da cidade. Ao lado: Barrio Chino (rua Arribeños) e a Av. Cabildo, cheia de lojas."},
   chalaca:{n:"Barra Chalaca", cat:"food", addr:"Montañeses 2585", hrs:"Todos os dias, 12:30 às 0h", lat:-34.5529157, lng:-58.452613, pid:"ChIJ4wH0zkbTvJURuVGWPsI-GVc", tip:"Peruano a 3 quadras do hotel. Ceviche chalaco, wantacos e pisco sour de maracujá."},
-  sportclub:{n:"SportClub Libertador", cat:"fit", addr:"Av. del Libertador 7395", hrs:"Seg a sex 7h às 22h · sáb 9h às 21h · dom fechado", lat:-34.5450563, lng:-58.4589731, pid:"ChIJof9dyCa0vJURGjmNHHXqJ4A", tip:"Academia completa com piscina. Peça um 'pase diario' na recepção. Leve touca e óculos; podem pedir 'apto físico'."},
   usina:{n:"Usina Cafetera Núñez", cat:"food", addr:"Franklin D. Roosevelt 1897", hrs:"Todos os dias, 8:30 às 20h", lat:-34.5544374, lng:-58.4561412, pid:"ChIJHeIxJAC1vJURFvoVASpAG4s", tip:"Um dos melhores cafés de Buenos Aires. Brunch caprichado e a marquise de doce de leite é famosa."},
   santantoni:{n:"Sant Antoni Clothes", cat:"shop", addr:"El Salvador 4666, Palermo Soho", hrs:"Todos os dias, 11h às 20h", lat:-34.589715, lng:-58.426854, pid:"ChIJpSihakW1vJURkqc1qI1mFM0", tip:"Roupa feminina de boa qualidade, atendimento muito elogiado."},
   rimmel:{n:"Rimmel Palermo Soho", cat:"shop", addr:"Malabia 1718, Palermo Soho", hrs:"Seg a sáb 11h às 20h · dom 13h às 20h", lat:-34.58992, lng:-58.4259499, pid:"ChIJASYEgoe1vJURbADtogUAqXo", tip:"Vestidos de festa e peças para todos os estilos."},
@@ -304,8 +302,7 @@ var DAYS = [
     {t:"20:30", p:"hotel", note:"Check-in. A recepção funciona 24h. Deixe as malas e descanse um pouco antes do jantar."},
     {t:"21:15", p:"chalaca", note:"Jantar peruano a 3 quadras do hotel. Peça o ceviche chalaco e o pisco sour de maracujá."}
   ]},
-  {d:10, wd:"Ter", title:"Natação e compras em Palermo", items:[
-    {t:"07:45", p:"sportclub", note:"Natação. São uns 20 min a pé pela Av. del Libertador (ou 5 min de Uber). Leve touca e peça um 'pase diario'."},
+  {d:10, wd:"Ter", title:"Compras em Palermo", items:[
     {t:"09:30", p:"usina", note:"Café da manhã sem pressa. Não deixe de provar a marquise de doce de leite."},
     {t:"11:00", p:"santantoni", note:"Comece as compras em Palermo Soho. Do café, é um Uber de uns 15 min."},
     {t:"11:45", p:"rimmel", note:"Vestidos e roupas femininas, com atendimento muito atencioso."},
@@ -328,7 +325,6 @@ var DAYS = [
     {t:"12:00", p:"biobanco", note:"Biobanco do Ecoparque, na Plaza Italia. Saia do museu por volta das 11:35: o Uber leva uns 20 min.", uber:{to:"biobanco", label:"Pedir Uber até o Biobanco"}},
     {t:"13:30", p:"donjulio", note:"Almoço no melhor restaurante da região. Sem reserva há fila, mas ela anda. São 10 min a pé da Plaza Italia, ou um Uber rápido.", uber:{to:"donjulio", label:"Pedir Uber até o Don Julio"}},
     {t:"15:30", p:"japones", note:"Tarde no Jardín Japonés. Fecha às 18h. São uns 20 min a pé do restaurante, ou 5 min de Uber.", uber:{to:"japones", label:"Pedir Uber até o Jardín Japonés"}},
-    {t:"18:30", p:"sportclub", opt:true, note:"Natação, só se der tempo antes do jantar das 20h. Do Jardín Japonés, são uns 15 min de Uber."},
     {t:"20:00", p:"jantar12", note:"Jantar. O local ainda não foi definido.", uber:{label:"Pedir Uber (digite o local no app)"}}
   ]},
   {d:13, wd:"Sex", title:"Despedida", items:[
