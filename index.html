@@ -291,7 +291,7 @@ var P = {
   ezeiza:{n:"Aeroporto de Ezeiza (EZE)", cat:"air", addr:"Autopista Ricchieri km 33,5, Ezeiza", hrs:"Aberto 24h", lat:-34.8125998, lng:-58.5391508, tip:"Aeroporto internacional de Buenos Aires. Fica a cerca de 1 hora de carro do hotel."},
   macn:{n:"Museo de Historia Natural (MACN)", cat:"visit", addr:"Av. Ángel Gallardo 470, Parque Centenario", hrs:"Público: todos os dias, 14h às 19h", lat:-34.6054816, lng:-58.437847, tip:"Museo Argentino de Ciencias Naturales Bernardino Rivadavia. De manhã o museu só recebe visita combinada; o público entra a partir das 14h."},
   biobanco:{n:"Biobanco do Ecoparque", cat:"visit", addr:"Ecoparque, entrada pela Plaza Italia (Av. Sarmiento com Av. Las Heras)", hrs:"Ecoparque: ter a dom, 10h às 17h", lat:-34.5808, lng:-58.4203, tip:"Entre pelo portão da Plaza Italia e pergunte pelo Biobanco na portaria."},
-  donjulio:{n:"Don Julio", cat:"food", addr:"Guatemala 4691, Palermo", hrs:"Todos os dias, 11:30 às 16h e 19h à 1h", lat:-34.5862916, lng:-58.4242774, tip:"A parrilla mais premiada da Argentina, a 10 min a pé da Plaza Italia. Sem reserva há fila, mas servem espumante enquanto você espera. Plano B: La Cabrera, na rua Cabrera 5099."},
+  santaines:{n:"Santa Inés", cat:"food", addr:"Ávalos 360, La Paternal", hrs:"Almoço: ter a dom, 12:30 às 15h", lat:-34.5927262, lng:-58.4677729, tip:"Cozinha de autor numa antiga padaria de bairro, recomendada pelo Guia Michelin (Bib Gourmand). O cardápio muda sempre. Reservas pelo WhatsApp 11 5848-6888."},
   japones:{n:"Jardín Japonés", cat:"walk", addr:"Av. Casares 3450, Palermo", hrs:"Todos os dias, 10h às 18h", lat:-34.5751398, lng:-58.4092629, tip:"Lagos com carpas, pontes e casa de chá. A entrada é paga; compre no site para evitar fila."},
   surpresa:{n:"Surpresa", cat:"walk", addr:"Segredo: o Uber sabe o caminho", hrs:"Aberto até a noite · entrada gratuita", lat:-34.5959828, lng:-58.3942623, tip:"Um lugar único em Buenos Aires. Não pesquise antes: entre, ande até o meio do salão e olhe para cima."},
   jantar12:{n:"Jantar", cat:"food", addr:"Local a confirmar", hrs:"Local a confirmar", tip:"O local ainda não foi definido."}
@@ -324,8 +324,8 @@ var DAYS = [
     {t:"08:30", p:"usina", note:"Café da manhã. Abre às 8:30."},
     {t:"10:30", p:"macn", note:"Visita ao Museo de Historia Natural, no Parque Centenario. Saia do café por volta das 9:50: o Uber leva uns 30 min.", uber:{to:"macn", label:"Pedir Uber até o Museo"}},
     {t:"12:00", p:"biobanco", note:"Biobanco do Ecoparque, na Plaza Italia. Saia do museu por volta das 11:35: o Uber leva uns 20 min.", uber:{to:"biobanco", label:"Pedir Uber até o Biobanco"}},
-    {t:"13:30", p:"donjulio", note:"Almoço no melhor restaurante da região. Sem reserva há fila, mas ela anda. São 10 min a pé da Plaza Italia, ou um Uber rápido.", uber:{to:"donjulio", label:"Pedir Uber até o Don Julio"}},
-    {t:"15:30", p:"japones", note:"Tarde no Jardín Japonés. Fecha às 18h. São uns 20 min a pé do restaurante, ou 5 min de Uber.", uber:{to:"japones", label:"Pedir Uber até o Jardín Japonés"}},
+    {t:"13:30", p:"santaines", note:"Almoço no Santa Inés, em La Paternal. A cozinha do almoço fecha às 15h, então não se atrase. São uns 20 min de Uber a partir da Plaza Italia.", uber:{to:"santaines", label:"Pedir Uber até o Santa Inés"}},
+    {t:"15:30", p:"japones", note:"Tarde no Jardín Japonés. Fecha às 18h. São uns 20 min de Uber a partir do restaurante.", uber:{to:"japones", label:"Pedir Uber até o Jardín Japonés"}},
     {t:"18:00", p:"surpresa", note:"Uma surpresa para você: um lugar que só existe em Buenos Aires e que ninguém deveria perder. Toque no botão e deixe o Uber levar. São uns 15 min do Jardín Japonés. Reserve 45 min e tome um café lá dentro.", uber:{to:"surpresa", label:"Pedir Uber até a surpresa"}},
     {t:"20:00", p:"jantar12", note:"Jantar. O local ainda não foi definido.", uber:{label:"Pedir Uber (digite o local no app)"}}
   ]},
