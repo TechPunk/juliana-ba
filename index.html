@@ -264,6 +264,7 @@ var CATS = {
   fit:{label:"Treino", c:"var(--fit)", hex:"#2E8B7A", ico:"swim"},
   walk:{label:"Passeio", c:"var(--walk)", hex:"#5B8C3A", ico:"leaf"},
   work:{label:"Congresso", c:"var(--work)", hex:"#2F5DA8", ico:"badge"},
+  visit:{label:"Visita", c:"var(--work)", hex:"#2F5DA8", ico:"badge"},
   air:{label:"Aeroporto", c:"var(--air)", hex:"#9A6B1F", ico:"plane"}
 };
 
@@ -290,6 +291,10 @@ var P = {
   mishiguene:{n:"Café Mishiguene", cat:"food", addr:"Congreso 1602", hrs:"Todos os dias, 9h às 0h", lat:-34.5513344, lng:-58.4542732, pid:"ChIJa99Ue4O1vJUR44pJXfJJaF8", tip:"Cozinha de inspiração israelense. O homus de brócolis é ótimo. Bom para jantar leve."},
   pobreluis:{n:"El Pobre Luis", cat:"food", addr:"Arribeños 2393", hrs:"Todos os dias, almoço e jantar (dom só almoço)", lat:-34.5553424, lng:-58.4522461, pid:"ChIJjSIcnS20vJURTTlKe4xJk08", tip:"Parrilla uruguaia clássica do bairro, a 3 minutos a pé."},
   ezeiza:{n:"Aeroporto de Ezeiza (EZE)", cat:"air", addr:"Autopista Ricchieri km 33,5, Ezeiza", hrs:"Aberto 24h", lat:-34.8125998, lng:-58.5391508, tip:"Aeroporto internacional de Buenos Aires. Fica a cerca de 1 hora de carro do hotel."},
+  macn:{n:"Museo de Historia Natural (MACN)", cat:"visit", addr:"Av. Ángel Gallardo 470, Parque Centenario", hrs:"Público: todos os dias, 14h às 19h", lat:-34.6054816, lng:-58.437847, tip:"Museo Argentino de Ciencias Naturales Bernardino Rivadavia. De manhã o museu só recebe visita combinada; o público entra a partir das 14h."},
+  biobanco:{n:"Biobanco do Ecoparque", cat:"visit", addr:"Ecoparque, entrada pela Plaza Italia (Av. Sarmiento com Av. Las Heras)", hrs:"Ecoparque: ter a dom, 10h às 17h", lat:-34.5808, lng:-58.4203, tip:"Entre pelo portão da Plaza Italia e pergunte pelo Biobanco na portaria."},
+  donjulio:{n:"Don Julio", cat:"food", addr:"Guatemala 4691, Palermo", hrs:"Todos os dias, 11:30 às 16h e 19h à 1h", lat:-34.5862916, lng:-58.4242774, tip:"A parrilla mais premiada da Argentina, a 10 min a pé da Plaza Italia. Sem reserva há fila, mas servem espumante enquanto você espera. Plano B: La Cabrera, na rua Cabrera 5099."},
+  japones:{n:"Jardín Japonés", cat:"walk", addr:"Av. Casares 3450, Palermo", hrs:"Todos os dias, 10h às 18h", lat:-34.5751398, lng:-58.4092629, tip:"Lagos com carpas, pontes e casa de chá. A entrada é paga; compre no site para evitar fila."},
   jantar12:{n:"Jantar", cat:"food", addr:"Local a confirmar", hrs:"Local a confirmar", tip:"O local ainda não foi definido."}
 };
 
@@ -317,11 +322,14 @@ var DAYS = [
     {t:"08:45", p:"ifibyne", note:"Congresso. Uber de 10 a 15 min; no app, digite 'IFIBYNE, Ciudad Universitaria'."},
     {t:"21:00", p:"mago", note:"Jantar reservado para você às 21h. A melhor parrilla da região, a 2 quadras do hotel. Peça as mollejas."}
   ]},
-  {d:12, wd:"Qui", title:"Congresso e jantar", banner:"Os horários do congresso são aproximados. Ajuste conforme o programa oficial.", items:[
+  {d:12, wd:"Qui", title:"Museu, Biobanco e Jardim Japonês", items:[
     {t:"08:30", p:"usina", note:"Café da manhã. Abre às 8:30."},
-    {t:"09:15", p:"ifibyne", note:"Congresso. Uber de 10 a 15 min."},
-    {t:"18:30", p:"sportclub", opt:true, note:"Natação depois do congresso, só se der tempo antes do jantar das 20h. Do IFIBYNE, são uns 10 min de Uber."},
-    {t:"20:00", p:"jantar12", note:"Jantar depois do congresso. O local ainda não foi definido.", uber:{label:"Pedir Uber (digite o local no app)"}}
+    {t:"10:30", p:"macn", note:"Visita ao Museo de Historia Natural, no Parque Centenario. Saia do café por volta das 9:50: o Uber leva uns 30 min.", uber:{to:"macn", label:"Pedir Uber até o Museo"}},
+    {t:"12:00", p:"biobanco", note:"Biobanco do Ecoparque, na Plaza Italia. Saia do museu por volta das 11:35: o Uber leva uns 20 min.", uber:{to:"biobanco", label:"Pedir Uber até o Biobanco"}},
+    {t:"13:30", p:"donjulio", note:"Almoço no melhor restaurante da região. Sem reserva há fila, mas ela anda. São 10 min a pé da Plaza Italia, ou um Uber rápido.", uber:{to:"donjulio", label:"Pedir Uber até o Don Julio"}},
+    {t:"15:30", p:"japones", note:"Tarde no Jardín Japonés. Fecha às 18h. São uns 20 min a pé do restaurante, ou 5 min de Uber.", uber:{to:"japones", label:"Pedir Uber até o Jardín Japonés"}},
+    {t:"18:30", p:"sportclub", opt:true, note:"Natação, só se der tempo antes do jantar das 20h. Do Jardín Japonés, são uns 15 min de Uber."},
+    {t:"20:00", p:"jantar12", note:"Jantar. O local ainda não foi definido.", uber:{label:"Pedir Uber (digite o local no app)"}}
   ]},
   {d:13, wd:"Sex", title:"Despedida", items:[
     {t:"08:30", p:"usina", note:"Último café da manhã em Buenos Aires."},
@@ -530,7 +538,7 @@ $("#zme").onclick=function(){if(me){centerMe();return}wantCenter=true;startLoc()
 
 /* ---------- lugares ---------- */
 function renderPlaces(){
-  var order=["fit","food","shop","walk","work","air","base"], html="";
+  var order=["fit","food","shop","walk","work","visit","air","base"], html="";
   order.forEach(function(c){
     var list=ids.filter(function(id){return P[id].cat===c}).sort(function(a,b){return hav(P.hotel,P[a])-hav(P.hotel,P[b])});
     if(!list.length)return;
